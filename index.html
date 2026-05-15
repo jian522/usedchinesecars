@@ -768,10 +768,27 @@
         }
 
         @media (max-width: 860px) {
-            .map-layout { flex-direction: column; align-items: center; }
-            .map-visual { flex: none; width: 100%; max-width: 420px; }
-            .trust-strip { gap: 20px; }
-            .trust-item .num { font-size: 22px; }
+            /* Task 1+2+3: Mobile layout optimization */
+            .countries-section-wrap { padding: 30px 14px; }
+            .countries-header h2 { font-size: 24px; }
+            .countries-header p { font-size: 14px; margin: 8px 0 0; }
+            .countries-region-tabs { flex-wrap: nowrap; overflow-x: auto; gap: 4px; padding-bottom: 4px; margin-bottom: 14px; }
+            .countries-region-tabs::-webkit-scrollbar { display: none; }
+            .region-tab { padding: 5px 12px; font-size: 11px; white-space: nowrap; flex-shrink: 0; }
+            .trust-strip { padding: 10px 14px; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+            .trust-item .num { font-size: 18px; }
+            .trust-item .lbl { font-size: 10px; }
+            .map-layout { flex-direction: row; align-items: flex-start; gap: 12px; }
+            .map-visual { flex: 0 0 180px; max-width: 180px; }
+            .world-map svg { max-height: 200px; }
+            .region-panel { flex: 1; padding: 12px; min-height: auto; }
+            .region-cards { grid-template-columns: 1fr; gap: 5px; }
+            .region-panel-title { font-size: 13px; margin-bottom: 8px; }
+            .region-bar-label { width: 40px; font-size: 10px; }
+            .region-bar-track { height: 7px; }
+            .region-bar-count { font-size: 10px; width: 18px; }
+            .market-summary-grid { grid-template-columns: repeat(3, 1fr); }
+            .market-summary-item .num { font-size: 16px; }
             /* Mobile: stack header-top vertically */
             .header-top-content {
                 flex-direction: column; gap: 4px;
@@ -788,13 +805,19 @@
             .main-content { margin-top: 108px; }
         }
         @media (max-width: 480px) {
-            .map-visual { max-width: 320px; }
-            .region-panel { padding: 14px; }
+            .map-visual { flex: 0 0 140px; max-width: 140px; }
+            .region-panel { padding: 10px; }
             .region-cards { grid-template-columns: 1fr; }
             .country-grid { grid-template-columns: 1fr 1fr; }
             .trust-strip { gap: 12px; padding: 12px 14px; flex-wrap: wrap; }
             .trust-item .num { font-size: 18px; }
             .trust-item .lbl { font-size: 10px; }
+        }
+
+        /* Task 7: Mobile admin table horizontal scroll */
+        @media (max-width: 860px) {
+            .data-table { overflow-x: auto; }
+            .data-table table { min-width: 550px; }
         }
 
         /* Testimonials - Compact */
@@ -807,8 +830,8 @@
         }
         .testimonials-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 18px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
             margin-top: 24px;
         }
         .testimonial-card {
@@ -854,11 +877,8 @@
         .testimonial-name { font-size: 13px; font-weight: 600; color: var(--text-primary); }
         .testimonial-role { font-size: 11px; color: var(--gray); margin-top: 1px; }
 
-        @media (max-width: 860px) {
-            .testimonials-grid { grid-template-columns: 1fr 1fr; }
-        }
         @media (max-width: 520px) {
-            .testimonials-grid { grid-template-columns: 1fr; }
+            .testimonials-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
         }
         
         /* Contact Section */
@@ -920,6 +940,11 @@
         .btn-secondary { background: var(--dark-tertiary); color: var(--text-primary); border: 1px solid var(--border); }
         .btn-success { background: var(--success); color: white; }
         .btn-danger { background: var(--danger); color: white; }
+        .stat-input {
+            width: 100%; padding: 10px 14px; border: 1px solid #ddd;
+            border-radius: 8px; font-size: 15px; outline: none;
+        }
+        .stat-input:focus { border-color: var(--gold); box-shadow: 0 0 0 2px rgba(212,175,55,0.15); }
         
         /* Footer */
         .footer {
@@ -1277,18 +1302,16 @@
             .process-step:nth-child(3)::after { content: none; }
             .process-step::after { right: -18px; }
         }
-        @media (max-width: 640px) {
+        @media (max-width: 860px) {
             .process-steps {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 20px 10px;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 14px 10px;
             }
-            .process-step:nth-child(2)::after,
-            .process-step:nth-child(4)::after { content: none; }
-            .process-step:nth-child(odd)::after { right: -14px; }
-            .process-step { padding: 20px 10px 18px; }
-            .step-icon { width: 52px; height: 52px; font-size: 20px; }
-            .step-title { font-size: 14px; }
-            .step-desc { font-size: 11px; max-width: 130px; }
+            .process-step::after { content: none; }
+            .process-step { padding: 16px 8px 14px; }
+            .step-icon { width: 44px; height: 44px; font-size: 18px; margin-bottom: 8px; }
+            .step-title { font-size: 12px; }
+            .step-desc { font-size: 10px; max-width: none; }
         }
 
         /* Trust Bar */
@@ -1491,7 +1514,7 @@
             .nav a {
                 font-size: 20px; padding: 16px 40px;
             }
-            .hero-stats { flex-direction: column; gap: 25px; }
+            .hero-stats { gap: 15px; flex-wrap: wrap; }
             .contact-content { grid-template-columns: 1fr; }
             .car-detail-gallery { grid-template-columns: 1fr; }
             .car-detail-main-image { grid-row: span 1; height: 280px; }
@@ -1532,9 +1555,11 @@
             .contact-icon { width: 36px; height: 36px; font-size: 15px; }
             .contact-text p, .contact-text a { font-size: 13px; }
             .contact-text h4 { font-size: 12px; }
-            /* Stats compact */
-            .hero-stats { gap: 12px; padding: 20px 10px; }
-            .stat-item { padding: 12px; }
+            /* Stats - one row on mobile */
+            .hero-stats { gap: 8px; padding: 12px 6px; flex-wrap: wrap; justify-content: center; }
+            .stat-item { padding: 6px 10px; min-width: 70px; }
+            .stat-number { font-size: 22px; }
+            .stat-label { font-size: 11px; }
             /* About page stats */
             .about-stats { gap: 12px; flex-wrap: wrap; }
             .about-stat { padding: 12px; min-width: calc(50% - 12px); }
@@ -1625,15 +1650,15 @@
                         <div class="stat-label" data-i18n="hero.stat1">在售车辆</div>
                     </div>
                     <div class="stat-item">
-                        <div class="stat-number">59</div>
+                        <div class="stat-number" id="stat-countries">59</div>
                         <div class="stat-label" data-i18n="hero.stat2">服务国家</div>
                     </div>
                     <div class="stat-item">
-                        <div class="stat-number">1000+</div>
+                        <div class="stat-number" id="stat-clients">1000+</div>
                         <div class="stat-label" data-i18n="hero.stat3">满意客户</div>
                     </div>
                     <div class="stat-item">
-                        <div class="stat-number">8+</div>
+                        <div class="stat-number" id="stat-years">8+</div>
                         <div class="stat-label" data-i18n="hero.stat4">从业年限</div>
                     </div>
                 </div>
@@ -2009,10 +2034,10 @@
                     <div class="service-card">
                         <div class="service-card-head">
                             <div class="service-icon-wrap">🔍</div>
-                            <div><h3>质量保障</h3><p>Quality Assurance</p></div>
+                            <div><h3 data-i18n="services.s5">质量保障</h3><p data-i18n="services.s5">Quality Assurance</p></div>
                         </div>
                         <div class="service-card-body">
-                            <p style="color:var(--gray);font-size:13px;">严格检测流程，出口品质有保障</p>
+                            <p style="color:var(--gray);font-size:13px;" data-i18n="services.s5d">严格检测流程，出口品质有保障</p>
                             <ul class="service-features">
                                 <li>100点专业检测项目</li>
                                 <li>发动机、变速箱重点检查</li>
@@ -2025,10 +2050,10 @@
                     <div class="service-card">
                         <div class="service-card-head">
                             <div class="service-icon-wrap">🌍</div>
-                            <div><h3>本地化服务</h3><p>Localized Support</p></div>
+                            <div><h3 data-i18n="services.s6">本地化服务</h3><p data-i18n="services.s6">Localized Support</p></div>
                         </div>
                         <div class="service-card-body">
-                            <p style="color:var(--gray);font-size:13px;">多语言支持，贴近本地市场需求</p>
+                            <p style="color:var(--gray);font-size:13px;" data-i18n="services.s6d">多语言支持，贴近本地市场需求</p>
                             <ul class="service-features">
                                 <li>中文/英语/俄语/阿拉伯语客服</li>
                                 <li>了解目标市场法规要求</li>
@@ -2207,20 +2232,32 @@
             <!-- Testimonials Management -->
             <div id="admin-testimonials" class="admin-section">
                 <div class="section-header"><h2 data-i18n="admin.testimonialsTitle">成交案例管理</h2><button class="btn btn-primary" onclick="showTestimonialModal()" data-i18n="admin.addTestimonial">添加案例</button></div>
-                <div class="data-table"><table><thead><tr><th>图片</th><th>名称</th><th>角色</th><th data-i18n="table.actions">操作</th></tr></thead><tbody id="testimonials-table-body"></tbody></table></div>
+                <div class="data-table"><table><thead><tr><th data-i18n="table.image">图片</th><th data-i18n="table.name">名称</th><th data-i18n="table.role">角色</th><th data-i18n="table.actions">操作</th></tr></thead><tbody id="testimonials-table-body"></tbody></table></div>
             </div>
             <!-- Settings -->
             <div id="admin-settings" class="admin-section">
                 <div class="section-header"><h2 data-i18n="admin.settingsTitle">系统设置</h2></div>
-                <div style="background:white;padding:30px;border-radius:12px;max-width:500px;">
-                    <h4 style="margin-bottom:20px;color:#333;" data-i18n="admin.changePwd">修改管理员账号密码</h4>
-                    <form id="change-password-form">
-                        <div class="form-group"><label data-i18n="admin.oldPwd">旧密码</label><input type="password" id="old-password" required></div>
-                        <div class="form-group"><label data-i18n="admin.newUser">新用户名</label><input type="text" id="new-username" required></div>
-                        <div class="form-group"><label data-i18n="admin.newPwd">新密码</label><input type="password" id="new-password" required></div>
-                        <div class="form-group"><label data-i18n="admin.confirmPwd">确认新密码</label><input type="password" id="confirm-password" required></div>
-                        <button type="submit" class="btn btn-primary" data-i18n="admin.savePwd">保存修改</button>
-                    </form>
+                <div style="display:flex;flex-wrap:wrap;gap:20px;">
+                    <!-- Stats Editor -->
+                    <div style="background:white;padding:30px;border-radius:12px;max-width:500px;flex:1;min-width:280px;">
+                        <h4 style="margin-bottom:20px;color:#333;">首页统计数据</h4>
+                        <div class="form-group"><label>服务国家</label><input type="text" id="stat-countries-input" class="stat-input"></div>
+                        <div class="form-group"><label>满意客户</label><input type="text" id="stat-clients-input" class="stat-input"></div>
+                        <div class="form-group"><label>从业年限</label><input type="text" id="stat-years-input" class="stat-input"></div>
+                        <button class="btn btn-primary" onclick="saveStats()">保存统计</button>
+                        <span id="stat-save-msg" style="margin-left:12px;font-size:13px;color:green;display:none;">已保存</span>
+                    </div>
+                    <!-- Password Change -->
+                    <div style="background:white;padding:30px;border-radius:12px;max-width:500px;flex:1;min-width:280px;">
+                        <h4 style="margin-bottom:20px;color:#333;" data-i18n="admin.changePwd">修改管理员账号密码</h4>
+                        <form id="change-password-form">
+                            <div class="form-group"><label data-i18n="admin.oldPwd">旧密码</label><input type="password" id="old-password" required></div>
+                            <div class="form-group"><label data-i18n="admin.newUser">新用户名</label><input type="text" id="new-username" required></div>
+                            <div class="form-group"><label data-i18n="admin.newPwd">新密码</label><input type="password" id="new-password" required></div>
+                            <div class="form-group"><label data-i18n="admin.confirmPwd">确认新密码</label><input type="password" id="confirm-password" required></div>
+                            <button type="submit" class="btn btn-primary" data-i18n="admin.savePwd">保存修改</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -2237,9 +2274,10 @@
                         <div class="form-group"><label data-i18n="form.brand">品牌</label><input type="text" id="car-brand" required></div>
                         <div class="form-group"><label data-i18n="form.model">车型</label><input type="text" id="car-model" required></div>
                     </div>
-                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:15px;">
+                    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:15px;">
                         <div class="form-group"><label data-i18n="form.year">年份</label><input type="number" id="car-year" min="2000" max="2025" required></div>
                         <div class="form-group"><label data-i18n="form.price">价格(USD)</label><input type="number" id="car-price" required></div>
+                        <div class="form-group"><label data-i18n="form.priceRmb">价格(RMB ¥)</label><input type="number" id="car-price-rmb"></div>
                     </div>
                     <div style="display:grid;grid-template-columns:1fr 1fr;gap:15px;">
                         <div class="form-group"><label data-i18n="form.mileage">里程(km)</label><input type="number" id="car-mileage" required></div>
@@ -2313,7 +2351,18 @@
             <div class="modal-body">
                 <form id="testimonial-form">
                     <input type="hidden" id="testimonial-id">
-                    <div class="form-group"><label>图片链接</label><input type="url" id="testimonial-image" placeholder="https://images.unsplash.com/..." required></div>
+                    <div class="form-group">
+                        <label data-i18n="form.uploadImage">上传图片</label>
+                        <div class="image-upload-area" onclick="document.getElementById('testimonial-file-input').click()" style="cursor:pointer;border:2px dashed var(--gold);border-radius:12px;padding:30px;text-align:center;background:rgba(212,175,55,0.05);transition:all 0.2s;">
+                            <div style="font-size:36px;">📷</div>
+                            <div style="color:var(--gray);font-size:13px;margin-top:8px;" data-i18n="form.uploadHint">点击上传图片</div>
+                            <input type="file" id="testimonial-file-input" accept="image/*" style="display:none;" onchange="handleTestimonialImageUpload(event)">
+                        </div>
+                        <div id="testimonial-image-preview" style="margin-top:8px;max-width:200px;border-radius:8px;overflow:hidden;display:none;border:1px solid rgba(212,175,55,0.2);">
+                            <img id="testimonial-image-preview-img" src="" style="width:100%;display:block;">
+                            <div style="padding:4px 8px;font-size:11px;color:var(--gray);background:rgba(0,0,0,0.03);text-align:center;">已上传</div>
+                        </div>
+                    </div>
                     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
                         <div class="form-group"><label data-i18n="form.name">客户名称</label><input type="text" id="testimonial-name" required></div>
                         <div class="form-group"><label data-i18n="form.role">角色/公司</label><input type="text" id="testimonial-role" placeholder="经销商 · Moscow, Russia" required></div>
@@ -2379,24 +2428,24 @@
     <script>
         // Data
         const initialCars = [
-            {id:1,brand:'Toyota',model:'Camry',year:2019,price:18500,mileage:45000,fuel:'汽油',description:{zh:'丰田凯美瑞，全球畅销中型轿车，动力充沛，油耗低，内饰精致，适合商务和家庭用车。',en:'Toyota Camry, globally popular mid-size sedan, powerful, fuel-efficient, refined interior.',ru:'Toyota Camry, популярный среднеразмерный седан, мощный, экономичный.',ar:'تويوتا كامري، سيارة سيدان متوسطة شائعة عالمياً، اقتصادية.'},images:['https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=600']},
-            {id:2,brand:'Honda',model:'Accord',year:2018,price:17200,mileage:52000,fuel:'汽油',description:{zh:'本田雅阁，日系中型轿车标杆，操控精准，空间宽敞，保值率高，是二手市场的热门之选。',en:'Honda Accord, benchmark mid-size sedan, precise handling, spacious, high resale value.',ru:'Honda Accord, эталонный седан, точное управление, просторный.',ar:'هوندا أكورد، سيارة سيدان ممتازة، قيادة دقيقة، واسعة.'},images:['https://images.unsplash.com/photo-1606611013016-969c19ba27d5?w=600']},
-            {id:3,brand:'Volkswagen',model:'Passat',year:2020,price:19800,mileage:38000,fuel:'汽油',description:{zh:'大众帕萨特，德系品质代表，底盘扎实，高速稳定，配置丰富，适合长途驾驶。',en:'VW Passat, German quality, solid chassis, stable at high speed, well-equipped.',ru:'VW Passat, немецкое качество, устойчивый, богатая комплектация.',ar:'فولكسفاغن باسات، جودة ألمانية، ثابتة، مجهزة جيداً.'},images:['https://images.unsplash.com/photo-1609521263047-f8f205293f24?w=600']},
-            {id:4,brand:'BMW',model:'5 Series',year:2017,price:28500,mileage:65000,fuel:'汽油',description:{zh:'宝马5系，豪华商务轿车典范，驾驶乐趣与舒适并重，品牌影响力强，商务接待首选。',en:'BMW 5 Series, luxury business sedan, driving pleasure meets comfort.',ru:'BMW 5 серии, роскошный бизнес-седан, удовольствие от вождения.',ar:'بي إم دبليو الفئة 5، سيدان فاخرة، متعة القيادة والراحة.'},images:['https://images.unsplash.com/photo-1555215695-3004980ad54e?w=600']},
-            {id:5,brand:'Mercedes-Benz',model:'E-Class',year:2019,price:32000,mileage:42000,fuel:'汽油',description:{zh:'奔驰E级，豪华轿车标杆，内饰奢华，科技配置领先，乘坐体验极佳。',en:'Mercedes E-Class, luxury sedan benchmark, luxurious interior, advanced tech.',ru:'Mercedes E-класс, эталон роскоши, передовые технологии.',ar:'مرسيدس الفئة E، سيدان فاخرة، تقنيات متقدمة.'},images:['https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=600']},
-            {id:6,brand:'Audi',model:'A6',year:2018,price:26800,mileage:48000,fuel:'汽油',description:{zh:'奥迪A6，科技感十足的豪华轿车，quattro四驱系统，灯厂美誉，内外兼修。',en:'Audi A6, tech-focused luxury sedan, quattro AWD, excellent lighting design.',ru:'Audi A6, технологичный седан, quattro, отличный дизайн.',ar:'أودي A6، سيدان فاخرة بتقنيات متقدمة، نظام quattro.'},images:['https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?w=600']},
-            {id:7,brand:'Nissan',model:'X-Trail',year:2018,price:16500,mileage:55000,fuel:'汽油',description:{zh:'日产奇骏，紧凑型SUV销量王，空间大，舒适性好，通过性强，家庭用车理想选择。',en:'Nissan X-Trail, best-selling compact SUV, spacious, comfortable, great off-road.',ru:'Nissan X-Trail, популярный SUV, просторный, комфортный.',ar:'نيسان إكس-تريل، SUV مبيعات عالية، واسعة ومريحة.'},images:['https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?w=600']},
-            {id:8,brand:'Hyundai',model:'Tucson',year:2019,price:17800,mileage:41000,fuel:'汽油',description:{zh:'现代途胜，高性价比SUV，配置丰富，外观时尚，质保政策优厚，值得入手。',en:'Hyundai Tucson, high value SUV, well-equipped, stylish design.',ru:'Hyundai Tucson, отличный SUV, богатая комплектация.',ar:'هيونداي توسان، SUV قيمة عالية، مجهزة وأناقة.'},images:['https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?w=600']},
-            {id:9,brand:'Kia',model:'Sportage',year:2017,price:15200,mileage:68000,fuel:'汽油',description:{zh:'起亚智跑，颜值与实力并存，设计获奖，配置厚道，性价比突出。',en:'Kia Sportage, award-winning design, well-equipped, great value.',ru:'Kia Sportage, дизайн-победитель, отличная комплектация.',ar:'كيا سبورتاج، تصميم حائز جوائز، قيمة ممتازة.'},images:['https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=600']},
-            {id:10,brand:'Ford',model:'Focus',year:2020,price:14200,mileage:35000,fuel:'汽油',description:{zh:'福特福克斯，操控之王，驾驶乐趣十足，底盘调校出色，年轻消费者最爱。',en:'Ford Focus, king of handling, fun to drive, excellent chassis tuning.',ru:'Ford Focus, король управляемости, отличная настройка шасси.',ar:'فورد فوكوس، ملك التحكم، قيادة ممتعة.'},images:['https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=600']},
-            {id:11,brand:'Chevrolet',model:'Cruze',year:2018,price:12800,mileage:58000,fuel:'汽油',description:{zh:'雪佛兰科鲁兹，美系紧凑轿车，动力强劲，安全性高，价格亲民。',en:'Chevrolet Cruze, American compact sedan, powerful, safe, affordable.',ru:'Chevrolet Cruze, американский седан, мощный, безопасный.',ar:'شيفروليه كروز، سيدان أمريكية، قوية وآمنة.'},images:['https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=600']},
-            {id:12,brand:'Mazda',model:'6',year:2019,price:16800,mileage:44000,fuel:'汽油',description:{zh:'马自达6，魂动设计美学，操控精准，创驰蓝天技术，省油环保。',en:'Mazda 6, Kodo design, precise handling, Skyactiv technology, fuel-efficient.',ru:'Mazda 6, дизайн Kodo, технология Skyactiv, экономичный.',ar:'مازدا 6، تصميم Kodo، تقنية Skyactiv، اقتصادية.'},images:['https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=600']},
-            {id:13,brand:'Lexus',model:'ES300h',year:2018,price:29800,mileage:39000,fuel:'混动',description:{zh:'雷克萨斯ES300h，豪华混动轿车，静谧舒适，品质可靠，保值率极高。',en:'Lexus ES300h, luxury hybrid sedan, quiet, comfortable, reliable.',ru:'Lexus ES300h, роскошный гибрид, тихий, комфортный.',ar:'لكزس ES300h، سيدان هجينة فاخرة، هادئة وموثوقة.'},images:['https://images.unsplash.com/photo-1542362567-b07e54358753?w=600']},
-            {id:14,brand:'Subaru',model:'Forester',year:2019,price:19200,mileage:46000,fuel:'汽油',description:{zh:'斯巴鲁森林人，全时四驱SUV，水平对置发动机，安全性能卓越，户外探险利器。',en:'Subaru Forester, AWD SUV, boxer engine, excellent safety, great for outdoors.',ru:'Subaru Forester, полный привод, оппозитный двигатель, безопасный.',ar:'سوبارو فورستر، SUV بدفع رباعي، محرك بوكسر، آمنة.'},images:['https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=600']},
-            {id:15,brand:'Volvo',model:'XC60',year:2017,price:24500,mileage:62000,fuel:'汽油',description:{zh:'沃尔沃XC60，北欧豪华SUV，安全之王，环保材料，简约设计，健康出行。',en:'Volvo XC60, Nordic luxury SUV, safety leader, eco-friendly, minimalist design.',ru:'Volvo XC60, скандинавский SUV, лидер безопасности.',ar:'فولفو XC60، SUV فاخرة، الأكثر أماناً، تصميم بسيط.'},images:['https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=600']},
-            {id:16,brand:'Tesla',model:'Model 3',year:2020,price:35800,mileage:28000,fuel:'电动',description:{zh:'特斯拉Model 3，纯电动智能轿车，自动驾驶辅助，OTA升级，科技感拉满。',en:'Tesla Model 3, pure electric smart sedan, autopilot, OTA updates.',ru:'Tesla Model 3, электромобиль, автопилот, OTA обновления.',ar:'تيسلا موديل 3، سيارة كهربائية ذكية، مساعد ذاتي.'},images:['https://images.unsplash.com/photo-1560958089-b8a1929cea89?w=600']},
-            {id:17,brand:'Land Rover',model:'Discovery Sport',year:2018,price:32500,mileage:54000,fuel:'汽油',description:{zh:'路虎发现运动版，英伦豪华SUV，越野能力出众，全地形反馈，探险家之选。',en:'Land Rover Discovery Sport, British luxury SUV, outstanding off-road capability.',ru:'Land Rover Discovery Sport, британский SUV, отличная проходимость.',ar:'لاند روفر ديسكفري سبورت، SUV بريطانية فاخرة، قدرة رائعة.'},images:['https://images.unsplash.com/photo-1619767886558-efdc259cde1a?w=600']},
-            {id:18,brand:'Peugeot',model:'3008',year:2019,price:17500,mileage:43000,fuel:'汽油',description:{zh:'标致3008，法式设计SUV，i-Cockpit座舱，科技感强，驾乘体验独特。',en:'Peugeot 3008, French design SUV, i-Cockpit, tech-forward, unique experience.',ru:'Peugeot 3008, французский SUV, i-Cockpit, уникальный дизайн.',ar:'بيجو 3008، SUV فرنسي التصميم، i-Cockpit، تجربة فريدة.'},images:['https://images.unsplash.com/photo-1606016159991-dfe4f2746ad5?w=600']}
+            {id:1,brand:'Toyota',model:'Camry',year:2019,price:18500,priceRmb:133200,mileage:45000,fuel:'汽油',description:{zh:'丰田凯美瑞，全球畅销中型轿车，动力充沛，油耗低，内饰精致，适合商务和家庭用车。',en:'Toyota Camry, globally popular mid-size sedan, powerful, fuel-efficient, refined interior.',ru:'Toyota Camry, популярный среднеразмерный седан, мощный, экономичный.',ar:'تويوتا كامري، سيارة سيدان متوسطة شائعة عالمياً، اقتصادية.'},images:['https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=600']},
+            {id:2,brand:'Honda',model:'Accord',year:2018,price:17200,priceRmb:123840,mileage:52000,fuel:'汽油',description:{zh:'本田雅阁，日系中型轿车标杆，操控精准，空间宽敞，保值率高，是二手市场的热门之选。',en:'Honda Accord, benchmark mid-size sedan, precise handling, spacious, high resale value.',ru:'Honda Accord, эталонный седан, точное управление, просторный.',ar:'هوندا أكورد، سيارة سيدان ممتازة، قيادة دقيقة، واسعة.'},images:['https://images.unsplash.com/photo-1606611013016-969c19ba27d5?w=600']},
+            {id:3,brand:'Volkswagen',model:'Passat',year:2020,price:19800,priceRmb:142560,mileage:38000,fuel:'汽油',description:{zh:'大众帕萨特，德系品质代表，底盘扎实，高速稳定，配置丰富，适合长途驾驶。',en:'VW Passat, German quality, solid chassis, stable at high speed, well-equipped.',ru:'VW Passat, немецкое качество, устойчивый, богатая комплектация.',ar:'فولكسفاغن باسات، جودة ألمانية، ثابتة، مجهزة جيداً.'},images:['https://images.unsplash.com/photo-1609521263047-f8f205293f24?w=600']},
+            {id:4,brand:'BMW',model:'5 Series',year:2017,price:28500,priceRmb:205200,mileage:65000,fuel:'汽油',description:{zh:'宝马5系，豪华商务轿车典范，驾驶乐趣与舒适并重，品牌影响力强，商务接待首选。',en:'BMW 5 Series, luxury business sedan, driving pleasure meets comfort.',ru:'BMW 5 серии, роскошный бизнес-седан, удовольствие от вождения.',ar:'بي إم دبليو الفئة 5، سيدان فاخرة، متعة القيادة والراحة.'},images:['https://images.unsplash.com/photo-1555215695-3004980ad54e?w=600']},
+            {id:5,brand:'Mercedes-Benz',model:'E-Class',year:2019,price:32000,priceRmb:230400,mileage:42000,fuel:'汽油',description:{zh:'奔驰E级，豪华轿车标杆，内饰奢华，科技配置领先，乘坐体验极佳。',en:'Mercedes E-Class, luxury sedan benchmark, luxurious interior, advanced tech.',ru:'Mercedes E-класс, эталон роскоши, передовые технологии.',ar:'مرسيدس الفئة E، سيدان فاخرة، تقنيات متقدمة.'},images:['https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=600']},
+            {id:6,brand:'Audi',model:'A6',year:2018,price:26800,priceRmb:192960,mileage:48000,fuel:'汽油',description:{zh:'奥迪A6，科技感十足的豪华轿车，quattro四驱系统，灯厂美誉，内外兼修。',en:'Audi A6, tech-focused luxury sedan, quattro AWD, excellent lighting design.',ru:'Audi A6, технологичный седан, quattro, отличный дизайн.',ar:'أودي A6، سيدان فاخرة بتقنيات متقدمة، نظام quattro.'},images:['https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?w=600']},
+            {id:7,brand:'Nissan',model:'X-Trail',year:2018,price:16500,priceRmb:118800,mileage:55000,fuel:'汽油',description:{zh:'日产奇骏，紧凑型SUV销量王，空间大，舒适性好，通过性强，家庭用车理想选择。',en:'Nissan X-Trail, best-selling compact SUV, spacious, comfortable, great off-road.',ru:'Nissan X-Trail, популярный SUV, просторный, комфортный.',ar:'نيسان إكس-تريل، SUV مبيعات عالية، واسعة ومريحة.'},images:['https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?w=600']},
+            {id:8,brand:'Hyundai',model:'Tucson',year:2019,price:17800,priceRmb:128160,mileage:41000,fuel:'汽油',description:{zh:'现代途胜，高性价比SUV，配置丰富，外观时尚，质保政策优厚，值得入手。',en:'Hyundai Tucson, high value SUV, well-equipped, stylish design.',ru:'Hyundai Tucson, отличный SUV, богатая комплектация.',ar:'هيونداي توسان، SUV قيمة عالية، مجهزة وأناقة.'},images:['https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?w=600']},
+            {id:9,brand:'Kia',model:'Sportage',year:2017,price:15200,priceRmb:109440,mileage:68000,fuel:'汽油',description:{zh:'起亚智跑，颜值与实力并存，设计获奖，配置厚道，性价比突出。',en:'Kia Sportage, award-winning design, well-equipped, great value.',ru:'Kia Sportage, дизайн-победитель, отличная комплектация.',ar:'كيا سبورتاج، تصميم حائز جوائز، قيمة ممتازة.'},images:['https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=600']},
+            {id:10,brand:'Ford',model:'Focus',year:2020,price:14200,priceRmb:102240,mileage:35000,fuel:'汽油',description:{zh:'福特福克斯，操控之王，驾驶乐趣十足，底盘调校出色，年轻消费者最爱。',en:'Ford Focus, king of handling, fun to drive, excellent chassis tuning.',ru:'Ford Focus, король управляемости, отличная настройка шасси.',ar:'فورد فوكوس، ملك التحكم، قيادة ممتعة.'},images:['https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=600']},
+            {id:11,brand:'Chevrolet',model:'Cruze',year:2018,price:12800,priceRmb:92160,mileage:58000,fuel:'汽油',description:{zh:'雪佛兰科鲁兹，美系紧凑轿车，动力强劲，安全性高，价格亲民。',en:'Chevrolet Cruze, American compact sedan, powerful, safe, affordable.',ru:'Chevrolet Cruze, американский седан, мощный, безопасный.',ar:'شيفروليه كروز، سيدان أمريكية، قوية وآمنة.'},images:['https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=600']},
+            {id:12,brand:'Mazda',model:'6',year:2019,price:16800,priceRmb:120960,mileage:44000,fuel:'汽油',description:{zh:'马自达6，魂动设计美学，操控精准，创驰蓝天技术，省油环保。',en:'Mazda 6, Kodo design, precise handling, Skyactiv technology, fuel-efficient.',ru:'Mazda 6, дизайн Kodo, технология Skyactiv, экономичный.',ar:'مازدا 6، تصميم Kodo، تقنية Skyactiv، اقتصادية.'},images:['https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=600']},
+            {id:13,brand:'Lexus',model:'ES300h',year:2018,price:29800,priceRmb:214560,mileage:39000,fuel:'混动',description:{zh:'雷克萨斯ES300h，豪华混动轿车，静谧舒适，品质可靠，保值率极高。',en:'Lexus ES300h, luxury hybrid sedan, quiet, comfortable, reliable.',ru:'Lexus ES300h, роскошный гибрид, тихий, комфортный.',ar:'لكزس ES300h، سيدان هجينة فاخرة، هادئة وموثوقة.'},images:['https://images.unsplash.com/photo-1542362567-b07e54358753?w=600']},
+            {id:14,brand:'Subaru',model:'Forester',year:2019,price:19200,priceRmb:138240,mileage:46000,fuel:'汽油',description:{zh:'斯巴鲁森林人，全时四驱SUV，水平对置发动机，安全性能卓越，户外探险利器。',en:'Subaru Forester, AWD SUV, boxer engine, excellent safety, great for outdoors.',ru:'Subaru Forester, полный привод, оппозитный двигатель, безопасный.',ar:'سوبارو فورستر، SUV بدفع رباعي، محرك بوكسر، آمنة.'},images:['https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=600']},
+            {id:15,brand:'Volvo',model:'XC60',year:2017,price:24500,priceRmb:176400,mileage:62000,fuel:'汽油',description:{zh:'沃尔沃XC60，北欧豪华SUV，安全之王，环保材料，简约设计，健康出行。',en:'Volvo XC60, Nordic luxury SUV, safety leader, eco-friendly, minimalist design.',ru:'Volvo XC60, скандинавский SUV, лидер безопасности.',ar:'فولفو XC60، SUV فاخرة، الأكثر أماناً، تصميم بسيط.'},images:['https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=600']},
+            {id:16,brand:'Tesla',model:'Model 3',year:2020,price:35800,priceRmb:257760,mileage:28000,fuel:'电动',description:{zh:'特斯拉Model 3，纯电动智能轿车，自动驾驶辅助，OTA升级，科技感拉满。',en:'Tesla Model 3, pure electric smart sedan, autopilot, OTA updates.',ru:'Tesla Model 3, электромобиль, автопилот, OTA обновления.',ar:'تيسلا موديل 3، سيارة كهربائية ذكية، مساعد ذاتي.'},images:['https://images.unsplash.com/photo-1560958089-b8a1929cea89?w=600']},
+            {id:17,brand:'Land Rover',model:'Discovery Sport',year:2018,price:32500,priceRmb:234000,mileage:54000,fuel:'汽油',description:{zh:'路虎发现运动版，英伦豪华SUV，越野能力出众，全地形反馈，探险家之选。',en:'Land Rover Discovery Sport, British luxury SUV, outstanding off-road capability.',ru:'Land Rover Discovery Sport, британский SUV, отличная проходимость.',ar:'لاند روفر ديسكفري سبورت، SUV بريطانية فاخرة، قدرة رائعة.'},images:['https://images.unsplash.com/photo-1619767886558-efdc259cde1a?w=600']},
+            {id:18,brand:'Peugeot',model:'3008',year:2019,price:17500,priceRmb:126000,mileage:43000,fuel:'汽油',description:{zh:'标致3008，法式设计SUV，i-Cockpit座舱，科技感强，驾乘体验独特。',en:'Peugeot 3008, French design SUV, i-Cockpit, tech-forward, unique experience.',ru:'Peugeot 3008, французский SUV, i-Cockpit, уникальный дизайн.',ar:'بيجو 3008، SUV فرنسي التصميم، i-Cockpit، تجربة فريدة.'},images:['https://images.unsplash.com/photo-1606016159991-dfe4f2746ad5?w=600']}
         ];
 
         const initialCountries = [
@@ -2533,6 +2582,7 @@
                 'testimonials.title':'客户成交案例','testimonials.desc':'来自全球客户的真实反馈',
                 'trust.1':'安全付款保障','trust.2':'全套出口单证','trust.3':'门到港物流','trust.4':'车辆质量检测','trust.5':'50+国家送达','trust.6':'多语言客服',
                 'section.allCars':'全部车辆','section.allDesc':'浏览我们完整的二手车库存',
+                'search.placeholder':'搜索品牌、车型...',
                 'contact.title':'联系我们','contact.address':'公司地址','contact.addressVal':'中国江西省新余市',
                 'contact.phone':'联系电话','contact.whatsapp':'WhatsApp','contact.email':'电子邮箱',
                 'contact.formTitle':'在线咨询','contact.name':'您的姓名','contact.emailLabel':'电子邮箱',
@@ -2549,6 +2599,8 @@
                 'services.s2':'国际物流','services.s2d':'完善的国际物流网络，安全快捷送达',
                 'services.s3':'手续办理','services.s3d':'专业办理出口报关、检验检疫等手续',
                 'services.s4':'金融服务','services.s4d':'提供灵活的付款方式和金融支持',
+                'services.s5':'质量保障','services.s5d':'严格检测流程，出口品质有保障',
+                'services.s6':'本地化服务','services.s6d':'多语言支持，贴近本地市场需求',
                 'process.title':'出口服务流程','process.desc':'从选车到交车，全程专业护航',
                 'process.step1.title':'选车咨询','process.step1.desc':'WhatsApp/邮件沟通需求，推荐适合目标市场的车型',
                 'process.step2.title':'确认订单','process.step2.desc':'签署购车协议，确认车辆规格、价格及交付条款',
@@ -2567,8 +2619,8 @@
                 'admin.stat1':'今日访问','admin.stat2':'车辆总数','admin.stat3':'服务国家','admin.stat4':'今日询盘',
                 'admin.traffic':'访问流量趋势',
                 'table.image':'图片','table.brand':'品牌','table.model':'车型','table.year':'年份','table.price':'价格','table.mileage':'里程','table.actions':'操作',
-                'table.flag':'国旗','table.name':'名称','table.nameEn':'英文名','table.code':'代码','table.region':'区域',
-                'form.brand':'品牌','form.model':'车型','form.year':'年份','form.price':'价格(USD)','form.mileage':'里程(km)','form.fuel':'燃油类型',
+                'table.flag':'国旗','table.name':'名称','table.nameEn':'英文名','table.code':'代码','table.region':'区域','table.role':'角色',
+                'form.brand':'品牌','form.model':'车型','form.year':'年份','form.price':'价格(USD)','form.priceRmb':'价格(RMB ¥)','form.mileage':'里程(km)','form.fuel':'燃油类型',
                 'form.description':'产品描述','form.imageUrl':'图片URL','form.uploadImage':'上传图片','form.uploadHint':'点击上传图片（支持多张）',
                 'form.countryName':'国家名称','form.countryNameEn':'英文名称','form.countryCode':'国家代码','form.countryFlag':'国旗emoji','form.countryRegion':'所属区域',
                 'form.cancel':'取消','form.save':'保存',
@@ -2599,6 +2651,7 @@
                 'testimonials.title':'Success Stories','testimonials.desc':'Real feedback from global customers',
                 'trust.1':'Secure Payment','trust.2':'Export Documentation','trust.3':'Door-to-Port Logistics','trust.4':'Quality Inspection','trust.5':'50+ Countries Delivery','trust.6':'Multilingual Support',
                 'section.allCars':'All Cars','section.allDesc':'Browse our complete used car inventory',
+                'search.placeholder':'Search brand, model...',
                 'contact.title':'Contact Us','contact.address':'Address','contact.addressVal':'Xinyu, Jiangxi, China',
                 'contact.phone':'Phone','contact.whatsapp':'WhatsApp','contact.email':'Email',
                 'contact.formTitle':'Inquiry','contact.name':'Your Name','contact.emailLabel':'Email',
@@ -2615,6 +2668,8 @@
                 'services.s2':'Global Logistics','services.s2d':'Complete logistics network, safe delivery',
                 'services.s3':'Documentation','services.s3d':'Export customs, inspection and quarantine',
                 'services.s4':'Financial Services','services.s4d':'Flexible payment and financial support',
+                'services.s5':'Quality Assurance','services.s5d':'Strict inspection process, export quality guaranteed',
+                'services.s6':'Localized Support','services.s6d':'Multi-language support, close to local market needs',
                 'process.title':'Export Process','process.desc':'Professional support from selection to delivery',
                 'process.step1.title':'Consultation','process.step1.desc':'Communicate via WhatsApp/Email, recommend models for target market',
                 'process.step2.title':'Order Confirmation','process.step2.desc':'Sign purchase agreement, confirm specs, price and delivery terms',
@@ -2633,8 +2688,8 @@
                 'admin.stat1':'Today Views','admin.stat2':'Total Cars','admin.stat3':'Countries','admin.stat4':'Inquiries',
                 'admin.traffic':'Traffic Trend',
                 'table.image':'Image','table.brand':'Brand','table.model':'Model','table.year':'Year','table.price':'Price','table.mileage':'Mileage','table.actions':'Actions',
-                'table.flag':'Flag','table.name':'Name','table.nameEn':'English Name','table.code':'Code','table.region':'Region',
-                'form.brand':'Brand','form.model':'Model','form.year':'Year','form.price':'Price(USD)','form.mileage':'Mileage(km)','form.fuel':'Fuel Type',
+                'table.flag':'Flag','table.name':'Name','table.nameEn':'English Name','table.code':'Code','table.region':'Region','table.role':'Role',
+                'form.brand':'Brand','form.model':'Model','form.year':'Year','form.price':'Price(USD)','form.priceRmb':'Price(RMB ¥)','form.mileage':'Mileage(km)','form.fuel':'Fuel Type',
                 'form.description':'Description','form.imageUrl':'Image URL','form.uploadImage':'Upload Images','form.uploadHint':'Click to upload (multiple)',
                 'form.countryName':'Country Name','form.countryNameEn':'English Name','form.countryCode':'Country Code','form.countryFlag':'Flag Emoji','form.countryRegion':'Region',
                 'form.cancel':'Cancel','form.save':'Save',
@@ -2665,6 +2720,7 @@
                 'testimonials.title':'Истории успеха','testimonials.desc':'Реальные отзывы клиентов со всего мира',
                 'trust.1':'Безопасная оплата','trust.2':'Экспортная документация','trust.3':'Доставка до порта','trust.4':'Проверка качества','trust.5':'Доставка в 50+ стран','trust.6':'Многоязычная поддержка',
                 'section.allCars':'Все автомобили','section.allDesc':'Просмотр полного каталога',
+                'search.placeholder':'Поиск марки, модели...',
                 'contact.title':'Контакты','contact.address':'Адрес','contact.addressVal':'Синью, Цзянси, Китай',
                 'contact.phone':'Телефон','contact.whatsapp':'WhatsApp','contact.email':'Email',
                 'contact.formTitle':'Запрос','contact.name':'Имя','contact.emailLabel':'Email',
@@ -2681,6 +2737,8 @@
                 'services.s2':'Логистика','services.s2d':'Международная доставка',
                 'services.s3':'Оформление','services.s3d':'Таможенное оформление и сертификация',
                 'services.s4':'Финансы','services.s4d':'Гибкие условия оплаты',
+                'services.s5':'Контроль качества','services.s5d':'Строгий контроль, гарантия качества экспорта',
+                'services.s6':'Локализация','services.s6d':'Многоязычная поддержка, под местный рынок',
                 'process.title':'Процесс экспорта','process.desc':'Профессиональная поддержка от выбора до доставки',
                 'process.step1.title':'Консультация','process.step1.desc':'Консультации по WhatsApp/Email, подбор моделей для рынка',
                 'process.step2.title':'Подтверждение','process.step2.desc':'Подписание договора, подтверждение спецификаций и условий',
@@ -2699,8 +2757,8 @@
                 'admin.stat1':'Просмотры','admin.stat2':'Всего авто','admin.stat3':'Стран','admin.stat4':'Запросы',
                 'admin.traffic':'Трафик',
                 'table.image':'Фото','table.brand':'Марка','table.model':'Модель','table.year':'Год','table.price':'Цена','table.mileage':'Пробег','table.actions':'Действия',
-                'table.flag':'Флаг','table.name':'Название','table.nameEn':'Англ. название','table.code':'Код','table.region':'Регион',
-                'form.brand':'Марка','form.model':'Модель','form.year':'Год','form.price':'Цена(USD)','form.mileage':'Пробег(км)','form.fuel':'Топливо',
+                'table.flag':'Флаг','table.name':'Название','table.nameEn':'Англ. название','table.code':'Код','table.region':'Регион','table.role':'Роль',
+                'form.brand':'Марка','form.model':'Модель','form.year':'Год','form.price':'Цена(USD)','form.priceRmb':'Цена(RMB ¥)','form.mileage':'Пробег(км)','form.fuel':'Топливо',
                 'form.description':'Описание','form.imageUrl':'URL изображения','form.uploadImage':'Загрузить','form.uploadHint':'Нажмите для загрузки',
                 'form.countryName':'Название','form.countryNameEn':'Англ. название','form.countryCode':'Код','form.countryFlag':'Флаг emoji','form.countryRegion':'Регион',
                 'form.cancel':'Отмена','form.save':'Сохранить',
@@ -2731,6 +2789,7 @@
                 'testimonials.title':'قصص النجاح','testimonials.desc':'تعليقات حقيقية من عملاء حول العالم',
                 'trust.1':'دفع آمن','trust.2':'وثائق التصدير','trust.3':'شحن من الباب إلى الميناء','trust.4':'فحص الجودة','trust.5':'توصيل إلى 50+ دولة','trust.6':'دعم متعدد اللغات',
                 'section.allCars':'جميع السيارات','section.allDesc':'تصفح المخزون الكامل',
+                'search.placeholder':'ابحث عن ماركة، موديل...',
                 'contact.title':'اتصل بنا','contact.address':'العنوان','contact.addressVal':'شينيو، جيانغشي، الصين',
                 'contact.phone':'الهاتف','contact.whatsapp':'واتساب','contact.email':'البريد',
                 'contact.formTitle':'استفسار','contact.name':'الاسم','contact.emailLabel':'البريد',
@@ -2747,6 +2806,8 @@
                 'services.s2':'الشحن الدولي','services.s2d':'شبكة لوجستية عالمية',
                 'services.s3':'المستندات','services.s3d':'التخليص الجمركي والشهادات',
                 'services.s4':'الخدمات المالية','services.s4d':'طرق دفع مرنة',
+                'services.s5':'ضمان الجودة','services.s5d':'فحص صارم، جودة مضمونة للتصدير',
+                'services.s6':'دعم محلي','services.s6d':'دعم متعدد اللغات، قريب من احتياجات السوق',
                 'process.title':'عملية التصدير','process.desc':'دعم احترافي من الاختيار حتى التسليم',
                 'process.step1.title':'استشارة','process.step1.desc':'تواصل عبر واتساب/البريد، توصية بموديلات مناسبة للسوق',
                 'process.step2.title':'تأكيد الطلب','process.step2.desc':'توقيع اتفاقية الشراء، تأكيد المواصفات والسعر وشروط التسليم',
@@ -2765,8 +2826,8 @@
                 'admin.stat1':'المشاهدات','admin.stat2':'إجمالي السيارات','admin.stat3':'الدول','admin.stat4':'الاستفسارات',
                 'admin.traffic':'حركة المرور',
                 'table.image':'الصورة','table.brand':'الماركة','table.model':'الموديل','table.year':'السنة','table.price':'السعر','table.mileage':'المسافة','table.actions':'الإجراءات',
-                'table.flag':'العلم','table.name':'الاسم','table.nameEn':'الاسم بالإنجليزية','table.code':'الرمز','table.region':'المنطقة',
-                'form.brand':'الماركة','form.model':'الموديل','form.year':'السنة','form.price':'السعر(USD)','form.mileage':'المسافة(كم)','form.fuel':'الوقود',
+                'table.flag':'العلم','table.name':'الاسم','table.nameEn':'الاسم بالإنجليزية','table.code':'الرمز','table.region':'المنطقة','table.role':'الدور',
+                'form.brand':'الماركة','form.model':'الموديل','form.year':'السنة','form.price':'السعر(USD)','form.priceRmb':'السعر(RMB ¥)','form.mileage':'المسافة(كم)','form.fuel':'الوقود',
                 'form.description':'الوصف','form.imageUrl':'رابط الصورة','form.uploadImage':'رفع صور','form.uploadHint':'اضغط للرفع',
                 'form.countryName':'اسم الدولة','form.countryNameEn':'الاسم بالإنجليزية','form.countryCode':'الرمز','form.countryFlag':'العلم','form.countryRegion':'المنطقة',
                 'form.cancel':'إلغاء','form.save':'حفظ',
@@ -2854,6 +2915,9 @@
                 const val = t(key);
                 if (val && val !== key) el.textContent = val;
             });
+            // Update search placeholder
+            const searchInput = document.getElementById('car-search');
+            if (searchInput) searchInput.placeholder = t('search.placeholder');
             renderHomeCars();
             renderAllCars();
             renderRegionPanel();
@@ -2968,6 +3032,40 @@
             document.getElementById('new-cars').innerHTML = newCars.map(car => createCarCard(car)).join('');
             document.getElementById('recommended-cars').innerHTML = recommendedCars.map(car => createCarCard(car)).join('');
             document.getElementById('stat-cars').textContent = cars.length;
+            loadStats();
+        }
+
+        // Stats persistence
+        function loadStats() {
+            try {
+                const saved = localStorage.getItem('jb_stats');
+                if (saved) {
+                    const s = JSON.parse(saved);
+                    if (s.countries) document.getElementById('stat-countries').textContent = s.countries;
+                    if (s.clients) document.getElementById('stat-clients').textContent = s.clients;
+                    if (s.years) document.getElementById('stat-years').textContent = s.years;
+                }
+                // Fill admin inputs with current values
+                const ci = document.getElementById('stat-countries-input');
+                const cli = document.getElementById('stat-clients-input');
+                const yi = document.getElementById('stat-years-input');
+                if (ci) ci.value = document.getElementById('stat-countries').textContent;
+                if (cli) cli.value = document.getElementById('stat-clients').textContent;
+                if (yi) yi.value = document.getElementById('stat-years').textContent;
+            } catch(e) {}
+        }
+        function saveStats() {
+            const countries = document.getElementById('stat-countries-input').value.trim();
+            const clients = document.getElementById('stat-clients-input').value.trim();
+            const years = document.getElementById('stat-years-input').value.trim();
+            if (!countries || !clients || !years) { alert('请填写所有统计字段'); return; }
+            localStorage.setItem('jb_stats', JSON.stringify({ countries, clients, years }));
+            document.getElementById('stat-countries').textContent = countries;
+            document.getElementById('stat-clients').textContent = clients;
+            document.getElementById('stat-years').textContent = years;
+            const msg = document.getElementById('stat-save-msg');
+            msg.style.display = 'inline';
+            setTimeout(() => msg.style.display = 'none', 2000);
         }
 
         function renderAllCars() {
@@ -3089,6 +3187,7 @@
                         <div class="car-price">
                             <span class="price-current">$${car.price.toLocaleString()}</span>
                             <span class="price-currency">USD</span>
+                            <span style="font-size:13px;color:var(--gray);margin-left:6px;">¥ <small>${car.priceRmb ? car.priceRmb.toLocaleString() : Math.round(car.price*7.2).toLocaleString()}</small></span>
                         </div>
                     </div>
                 </div>
@@ -3108,7 +3207,8 @@
             const car = cars.find(c => c.id === carId);
             if (!car) return;
             document.getElementById('detail-car-title').textContent = `${car.brand} ${car.model}`;
-            document.getElementById('detail-price').textContent = `$${car.price.toLocaleString()} USD`;
+            const rmb = car.priceRmb || Math.round(car.price * 7.2);
+            document.getElementById('detail-price').innerHTML = `$${car.price.toLocaleString()} USD <span style="font-size:18px;color:var(--gray);font-weight:400;">¥ ${rmb.toLocaleString()}</span>`;
             document.getElementById('detail-gallery').innerHTML = `
                 <div class="car-detail-main-image"><img src="${car.images[0]}" alt="${car.brand} ${car.model} - main image" onerror="this.src='https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=600'"></div>
                 ${car.images.slice(1,5).map((img, idx) => `<div class="car-detail-thumb"><img src="${img}" alt="${car.brand} ${car.model} - image ${idx+2}" onerror="this.src='https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=600'"></div>`).join('')}
@@ -3382,11 +3482,14 @@ const regionLabels = {
             if (!grid) return;
             const qmap = { zh:testimonialsData.map(t=>t.qz), en:testimonialsData.map(t=>t.qe), ru:testimonialsData.map(t=>t.qr), ar:testimonialsData.map(t=>t.qa) };
             const quotes = qmap[currentLang] || qmap.en;
-            grid.innerHTML = testimonialsData.map((t, i) => `
+            const displayTestimonials = testimonialsData.slice(0, 4);
+            grid.innerHTML = displayTestimonials.map((t, i) => {
+                const originalIdx = testimonialsData.indexOf(t);
+                return `
                 <div class="testimonial-card">
                     <img class="testimonial-img" src="${t.image}" alt="${t.name}" loading="lazy" onerror="this.style.display='none'">
                     <div class="testimonial-body">
-                        <div class="testimonial-quote">${quotes[i]}</div>
+                        <div class="testimonial-quote">${quotes[originalIdx]}</div>
                         <div class="testimonial-author">
                             <span style="width:32px;height:32px;border-radius:50%;background:var(--gold);color:var(--dark);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;flex-shrink:0;">${t.name[0]}</span>
                             <div class="testimonial-info">
@@ -3395,12 +3498,31 @@ const regionLabels = {
                             </div>
                         </div>
                     </div>
-                </div>
-            `).join('');
+                </div>`;
+            }).join('');
         }
 
         // Testimonial CRUD
         let currentEditingTestimonial = null;
+        let testimonialImageDataUrl = '';
+
+        function handleTestimonialImageUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            if (file.size > 10 * 1024 * 1024) { showToast('图片不能超过10MB', 'error'); return; }
+            showToast('正在处理图片...', 'info');
+            compressImage(file, 800, 0.82, (dataUrl) => {
+                testimonialImageDataUrl = dataUrl;
+                const preview = document.getElementById('testimonial-image-preview');
+                const img = document.getElementById('testimonial-image-preview-img');
+                img.src = dataUrl;
+                preview.style.display = 'block';
+                showToast('图片已上传', 'success');
+            }, (err) => {
+                showToast('图片处理失败: ' + err, 'error');
+            });
+            event.target.value = '';
+        }
 
         function renderTestimonialsAdmin() {
             const tbody = document.getElementById('testimonials-table-body');
@@ -3419,21 +3541,32 @@ const regionLabels = {
             const titleEl = document.getElementById('testimonial-modal-title');
             if (titleEl) titleEl.textContent = currentEditingTestimonial ? '编辑成交案例' : '添加成交案例';
             document.getElementById('testimonial-id').value = currentEditingTestimonial ? currentEditingTestimonial.id : '';
-            document.getElementById('testimonial-image').value = currentEditingTestimonial ? currentEditingTestimonial.image : '';
             document.getElementById('testimonial-name').value = currentEditingTestimonial ? currentEditingTestimonial.name : '';
             document.getElementById('testimonial-role').value = currentEditingTestimonial ? currentEditingTestimonial.role : '';
             document.getElementById('testimonial-qz').value = currentEditingTestimonial ? currentEditingTestimonial.qz : '';
             document.getElementById('testimonial-qe').value = currentEditingTestimonial ? currentEditingTestimonial.qe : '';
             document.getElementById('testimonial-qr').value = currentEditingTestimonial ? currentEditingTestimonial.qr : '';
             document.getElementById('testimonial-qa').value = currentEditingTestimonial ? currentEditingTestimonial.qa : '';
+            // Handle image state
+            testimonialImageDataUrl = '';
+            const preview = document.getElementById('testimonial-image-preview');
+            const previewImg = document.getElementById('testimonial-image-preview-img');
+            if (currentEditingTestimonial && currentEditingTestimonial.image) {
+                previewImg.src = currentEditingTestimonial.image;
+                preview.style.display = 'block';
+            } else {
+                preview.style.display = 'none';
+                previewImg.src = '';
+            }
             document.getElementById('testimonial-modal').classList.add('active');
         }
 
-        function closeTestimonialModal() { document.getElementById('testimonial-modal').classList.remove('active'); currentEditingTestimonial = null; }
+        function closeTestimonialModal() { document.getElementById('testimonial-modal').classList.remove('active'); currentEditingTestimonial = null; testimonialImageDataUrl = ''; const p = document.getElementById('testimonial-image-preview'); if(p)p.style.display='none'; }
 
         function saveTestimonial() {
             const id = currentEditingTestimonial ? currentEditingTestimonial.id : Date.now();
-            const image = document.getElementById('testimonial-image').value;
+            // Use uploaded image or existing image in edit mode
+            const image = testimonialImageDataUrl || (currentEditingTestimonial ? currentEditingTestimonial.image : '');
             const name = document.getElementById('testimonial-name').value;
             const role = document.getElementById('testimonial-role').value;
             const qz = document.getElementById('testimonial-qz').value;
@@ -3561,6 +3694,7 @@ const regionLabels = {
             document.querySelectorAll('.admin-nav-btn').forEach(b => b.classList.remove('active'));
             document.getElementById('admin-' + section).classList.add('active');
             event.target.classList.add('active');
+            if (section === 'settings') loadStats();
         }
 
         // Admin Tables
@@ -3570,7 +3704,7 @@ const regionLabels = {
                 <tr>
                     <td><img src="${car.images[0]}" alt="${car.brand} ${car.model} - admin" onerror="this.src='https://via.placeholder.com/70x50'"></td>
                     <td>${car.brand}</td><td>${car.model}</td><td>${car.year}</td>
-                    <td>$${car.price.toLocaleString()}</td><td>${car.mileage.toLocaleString()} km</td>
+                    <td>$${car.price.toLocaleString()}<br><span style="font-size:11px;color:#999;">¥${(car.priceRmb||Math.round(car.price*7.2)).toLocaleString()}</span></td><td>${car.mileage.toLocaleString()} km</td>
                     <td><div class="table-actions"><button class="btn-edit" onclick="editCar(${car.id})">编辑</button><button class="btn-delete" onclick="deleteCar(${car.id})">删除</button></div></td>
                 </tr>
             `).join('');
@@ -3593,6 +3727,7 @@ const regionLabels = {
             document.getElementById('car-model').value = currentEditingCar ? currentEditingCar.model : '';
             document.getElementById('car-year').value = currentEditingCar ? currentEditingCar.year : '';
             document.getElementById('car-price').value = currentEditingCar ? currentEditingCar.price : '';
+            document.getElementById('car-price-rmb').value = currentEditingCar ? (currentEditingCar.priceRmb || '') : '';
             document.getElementById('car-mileage').value = currentEditingCar ? currentEditingCar.mileage : '';
             document.getElementById('car-fuel').value = currentEditingCar ? currentEditingCar.fuel : '汽油';
             document.getElementById('car-description').value = currentEditingCar ? (typeof currentEditingCar.description === 'object' ? (currentEditingCar.description.zh || '') : (currentEditingCar.description || '')) : '';
@@ -3610,15 +3745,28 @@ const regionLabels = {
             const model = document.getElementById('car-model').value;
             const year = parseInt(document.getElementById('car-year').value);
             const price = parseInt(document.getElementById('car-price').value);
+            const priceRmb = parseInt(document.getElementById('car-price-rmb').value) || Math.round(price * 7.2);
             const mileage = parseInt(document.getElementById('car-mileage').value);
             const fuel = document.getElementById('car-fuel').value;
-            const description = document.getElementById('car-description').value;
+            const descStr = document.getElementById('car-description').value;
             const image = document.getElementById('car-image').value || 'https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=600';
 
             if (!brand || !model || !year || !price || !mileage) { showToast('请填写完整信息', 'error'); return; }
 
+            // Task 8: Preserve multi-language descriptions
+            let description;
+            if (currentEditingCar && typeof currentEditingCar.description === 'object') {
+                description = {...currentEditingCar.description};
+                const langKey = currentLang === 'zh' ? 'zh' : currentLang;
+                if (descStr) description[langKey] = descStr;
+            } else if (descStr) {
+                description = { zh: descStr, en: '', ru: '', ar: '' };
+            } else {
+                description = '';
+            }
+
             const images = uploadedCarImages.length > 0 ? uploadedCarImages : [image];
-            const carData = {id, brand, model, year, price, mileage, fuel, description, images};
+            const carData = {id, brand, model, year, price, priceRmb, mileage, fuel, description, images};
 
             if (currentEditingCar) {
                 const idx = cars.findIndex(c => c.id === currentEditingCar.id);
