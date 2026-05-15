@@ -772,6 +772,20 @@
             .map-visual { flex: none; width: 100%; max-width: 420px; }
             .trust-strip { gap: 20px; }
             .trust-item .num { font-size: 22px; }
+            /* Mobile: stack header-top vertically */
+            .header-top-content {
+                flex-direction: column; gap: 4px;
+                padding: 6px 10px;
+            }
+            .header-contact {
+                flex-wrap: wrap; justify-content: center; gap: 4px 10px;
+            }
+            .header-contact a {
+                font-size: 11px; white-space: nowrap;
+            }
+            .lang-switcher { gap: 1px; padding: 2px; }
+            .lang-btn { padding: 3px 7px; font-size: 10px; }
+            .main-content { margin-top: 108px; }
         }
         @media (max-width: 480px) {
             .map-visual { max-width: 320px; }
@@ -1491,8 +1505,39 @@
             .carousel { height: 320px; }
             .carousel-caption h2 { font-size: 24px; }
             .carousel-caption p { font-size: 14px; }
+            .section { padding: 30px 14px; }
             .section-title h2 { font-size: 26px; }
+            .section-title p { font-size: 14px; }
             .stat-number { font-size: 34px; }
+            .car-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+            .car-card { border-radius: 8px; }
+            .car-image-container { height: 110px; }
+            .car-info { padding: 10px; }
+            .car-brand { font-size: 10px; }
+            .car-name { font-size: 14px; margin-bottom: 6px; }
+            .car-details { gap: 6px; margin-bottom: 6px; }
+            .car-detail { font-size: 11px; }
+            .price-current { font-size: 16px; }
+            .price-currency { font-size: 11px; }
+            /* Filter bar stacked */
+            .filter-bar { flex-direction: column; gap: 8px; padding: 12px; }
+            .filter-group { width: 100%; }
+            .filter-group select { width: 100%; }
+            .filter-reset { width: 100%; text-align: center; }
+            .search-bar { flex-direction: column; }
+            .search-bar input { width: 100%; }
+            .search-bar button { width: 100%; }
+            /* Contact items more compact */
+            .contact-item { padding: 10px; gap: 10px; }
+            .contact-icon { width: 36px; height: 36px; font-size: 15px; }
+            .contact-text p, .contact-text a { font-size: 13px; }
+            .contact-text h4 { font-size: 12px; }
+            /* Stats compact */
+            .hero-stats { gap: 12px; padding: 20px 10px; }
+            .stat-item { padding: 12px; }
+            /* About page stats */
+            .about-stats { gap: 12px; flex-wrap: wrap; }
+            .about-stat { padding: 12px; min-width: calc(50% - 12px); }
         }
     </style>
 
