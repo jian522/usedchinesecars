@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /?page=admin
+Disallow: /*?lang=*
+
+Sitemap: https://jinbacars.com/sitemap.xml
+
+# Crawl-delay: 10
