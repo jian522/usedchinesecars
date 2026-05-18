@@ -344,6 +344,7 @@
         }
         .carousel-slide img {
             width: 100%; height: 100%; object-fit: cover;
+            background: var(--dark);
         }
         .carousel-slide::after {
             content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
@@ -1735,6 +1736,16 @@
             .contact-content { grid-template-columns: 1fr; }
             .car-detail-gallery { grid-template-columns: 1fr; }
             .car-detail-main-image { grid-row: span 1; height: 280px; }
+            .car-detail-main-image img { object-fit: contain; }
+            .car-detail-thumbs {
+                display: flex; overflow-x: auto; gap: 8px; padding-bottom: 4px;
+                -webkit-overflow-scrolling: touch; scroll-snap-type: x mandatory;
+            }
+            .car-detail-thumb {
+                flex: 0 0 auto; width: 120px; aspect-ratio: 4/3;
+                scroll-snap-align: start;
+            }
+            .car-detail-thumb img { object-fit: contain; }
             .admin-header { flex-wrap: wrap; gap: 10px; }
             .admin-nav { order: 3; width: 100%; justify-content: center; }
         }
@@ -2498,12 +2509,13 @@
             <div id="admin-cars" class="admin-section">
                 <div class="section-header">
                     <h2 data-i18n="admin.carsTitle">车辆管理</h2>
-                    <div style="display:flex;gap:10px;">
+                    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                        <button class="btn btn-danger" onclick="batchDeleteCars()" id="batch-delete-btn" style="background:#da3633;color:white;border:none;padding:8px 16px;border-radius:6px;cursor:pointer;display:none;font-weight:600;" data-i18n="admin.batchDelete">🗑️ 批量删除</button>
                         <button class="btn btn-secondary" onclick="showCsvImportModal()" data-i18n="admin.csvImport">CSV导入</button>
                         <button class="btn btn-primary" onclick="showCarModal()" data-i18n="admin.addCar">添加车辆</button>
                     </div>
                 </div>
-                <div class="data-table"><table><thead><tr><th data-i18n="table.image">图片</th><th data-i18n="table.brand">品牌</th><th data-i18n="table.model">车型</th><th data-i18n="table.year">年份</th><th data-i18n="table.price">价格</th><th data-i18n="table.mileage">里程</th><th data-i18n="table.actions">操作</th></tr></thead><tbody id="cars-table-body"></tbody></table></div>
+                <div class="data-table"><table><thead><tr><th style="width:36px;"><input type="checkbox" id="select-all-cars" onchange="toggleSelectAllCars(this.checked)" title="全选/取消全选"></th><th data-i18n="table.image">图片</th><th data-i18n="table.brand">品牌</th><th data-i18n="table.model">车型</th><th data-i18n="table.year">年份</th><th data-i18n="table.price">价格</th><th data-i18n="table.mileage">里程</th><th data-i18n="table.actions">操作</th></tr></thead><tbody id="cars-table-body"></tbody></table></div>
             </div>
             
             <!-- Countries Management -->
@@ -2914,10 +2926,10 @@
         ];
 
         const defaultCarousel = [
-            {id:1,title:'中国新能源二手车出口',desc:'覆盖全球59个国家和地区 · China NEV & Used Car Export',image:'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1600',btnText:'浏览车辆',btnLink:'cars'},
-            {id:2,title:'比亚迪 BYD · 全球新能源领导者',desc:'海豹Seal · 海豚Dolphin · 元Atto 3 · 宋Song · 汉Han',image:'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=1600',btnText:'查看车型',btnLink:'cars'},
-            {id:3,title:'专业二手车出口一站式服务',desc:'采购 · 整备 · 出口许可证 · 报关 · 海运 · 保险',image:'https://images.unsplash.com/photo-1568027892270-5e5a0895b1b8?w=1600',btnText:'联系我们',btnLink:'contact'},
-            {id:4,title:'品质保障 · 值得信赖',desc:'全车检测 · 电池检测 · 车况报告 · 视频验车 · Export Quality Assured',image:'https://images.unsplash.com/photo-1602351447937-745cb720612f?w=1600',btnText:'了解更多',btnLink:'about'}
+            {id:1,title:'中国新能源二手车出口',desc:'覆盖全球59个国家和地区 · China NEV & Used Car Export',image:'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1200&h=675&fit=crop',btnText:'浏览车辆',btnLink:'cars'},
+            {id:2,title:'比亚迪 BYD · 全球新能源领导者',desc:'海豹Seal · 海豚Dolphin · 元Atto 3 · 宋Song · 汉Han',image:'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=1200&h=675&fit=crop',btnText:'查看车型',btnLink:'cars'},
+            {id:3,title:'专业二手车出口一站式服务',desc:'采购 · 整备 · 出口许可证 · 报关 · 海运 · 保险',image:'https://images.unsplash.com/photo-1568027892270-5e5a0895b1b8?w=1200&h=675&fit=crop',btnText:'联系我们',btnLink:'contact'},
+            {id:4,title:'品质保障 · 值得信赖',desc:'全车检测 · 电池检测 · 车况报告 · 视频验车 · Export Quality Assured',image:'https://images.unsplash.com/photo-1602351447937-745cb720612f?w=1200&h=675&fit=crop',btnText:'了解更多',btnLink:'about'}
         ];
 
         // State
@@ -3992,7 +4004,7 @@
             document.getElementById('detail-price').innerHTML = `$${car.price.toLocaleString()} USD <span style="font-size:18px;color:var(--gray);font-weight:400;">¥ ${rmb.toLocaleString()}</span>`;
             document.getElementById('detail-gallery').innerHTML = `
                 <div class="car-detail-main-image"><img src="${car.images[0]}" alt="${car.brand} ${car.model} - main image" onerror="this.src='https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=600'"></div>
-                ${car.images.slice(1,5).map((img, idx) => `<div class="car-detail-thumb"><img src="${img}" alt="${car.brand} ${car.model} - image ${idx+2}" onerror="this.src='https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=600'"></div>`).join('')}
+                <div class="car-detail-thumbs">${car.images.slice(1).map((img, idx) => `<div class="car-detail-thumb" onclick="this.parentElement.parentElement.querySelector('.car-detail-main-image img').src=this.querySelector('img').src"><img src="${img}" alt="${car.brand} ${car.model} - image ${idx+2}" onerror="this.src='https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=600'"></div>`).join('')}</div>
             `;
             document.getElementById('detail-description').innerHTML = `<h4>${t('detail.desc')}</h4><p>${getCarDescription(car)}</p>`;
             const fuelType = car.fuel_type || getDefaultFuelType(car.fuel);
@@ -4667,6 +4679,7 @@ const regionLabels = {
             if (car.recommended) badges += '<span title="推荐车型" style="display:inline-block;background:#fff3e0;color:#e65100;font-size:10px;padding:1px 5px;border-radius:3px;">⭐</span>';
             return `
                 <tr>
+                    <td><input type="checkbox" class="car-select-checkbox" value="${id}" onchange="updateBatchDeleteBtn()"></td>
                     <td><img src="${imgSrc}" alt="${brand} ${model} - admin" onerror="this.src='https://via.placeholder.com/70x50'"></td>
                     <td>${brand} ${badges}</td><td>${model}</td><td>${year}</td>
                     <td style="white-space:nowrap;">$${price.toLocaleString()} <span style="font-size:10px;color:#999;">¥${priceRmb.toLocaleString()}</span></td><td>${mileage.toLocaleString()} km</td>
@@ -4783,6 +4796,37 @@ const regionLabels = {
                 try { renderAllCars(); } catch(e) { console.warn('delete: renderAllCars error', e); }
                 showToast('删除成功', 'success');
             }
+        }
+
+        // Batch delete cars
+        function toggleSelectAllCars(checked) {
+            document.querySelectorAll('.car-select-checkbox').forEach(cb => cb.checked = checked);
+            updateBatchDeleteBtn();
+        }
+
+        function updateBatchDeleteBtn() {
+            const checked = document.querySelectorAll('.car-select-checkbox:checked');
+            const btn = document.getElementById('batch-delete-btn');
+            if (checked.length > 0) {
+                btn.style.display = 'inline-block';
+                btn.textContent = '🗑️ 批量删除 (' + checked.length + ')';
+            } else {
+                btn.style.display = 'none';
+            }
+        }
+
+        function batchDeleteCars() {
+            const checked = document.querySelectorAll('.car-select-checkbox:checked');
+            if (checked.length === 0) return;
+            if (!confirm('确定批量删除选中的 ' + checked.length + ' 辆车？此操作不可撤销！')) return;
+            const ids = new Set();
+            checked.forEach(cb => ids.add(parseInt(cb.value)));
+            cars = cars.filter(c => !ids.has(c.id));
+            try { localStorage.setItem('jb_cars', JSON.stringify(cars)); npointMarkDirty(); } catch(e) { console.warn('batchDelete: localStorage error', e); }
+            try { renderAdminTables(); } catch(e) { console.warn('batchDelete: renderAdminTables error', e); }
+            try { renderHomeCars(); } catch(e) { console.warn('batchDelete: renderHomeCars error', e); }
+            try { renderAllCars(); } catch(e) { console.warn('batchDelete: renderAllCars error', e); }
+            showToast('已删除 ' + checked.length + ' 辆车', 'success');
         }
 
         // Country CRUD
