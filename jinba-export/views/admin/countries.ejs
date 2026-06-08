@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="<%= htmlLang %>">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countries - Jinba Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/design-tokens.css">
+    <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body class="admin-body">
+    <%- include('admin_sidebar') %>
+    <div class="admin-main">
+        <div class="admin-topbar">
+            <h1>Countries</h1>
+            <a href="/admin/countries/new" class="btn btn-primary">+ Add Country</a>
+        </div>
+        <div class="admin-content">
+            <table class="admin-table">
+                <thead><tr><th>Flag</th><th>ISO</th><th>Name</th><th>Region</th><th>Trade Volume</th><th>Active</th><th>Actions</th></tr></thead>
+                <tbody>
+                    <% countries.forEach(c => { %>
+                        <tr>
+                            <td><img src="https://flagcdn.com/w40/<%= c.iso_code.toLowerCase() %>.png" alt="" width="40" style="border-radius:2px"></td>
+                            <td><%= c.iso_code %></td>
+                            <td><%= c.name_zh %> / <%= c.name_en %></td>
+                            <td><%= c.region %></td>
+                            <td><%= c.trade_volume %></td>
+                            <td><span class="status-dot <%= c.is_active ? 'active' : '' %>"></span></td>
+                            <td class="actions-cell">
+                                <a href="/admin/countries/<%= c.id %>/edit" class="btn btn-sm btn-outline">Edit</a>
+                                <button class="btn btn-sm btn-danger" onclick="deleteCountry(<%= c.id %>, this)">Delete</button>
+                            </td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script>
+        async function deleteCountry(id, btn) {
+            if (!confirm('Delete this country?')) return;
+            await fetch('/admin/api/countries/' + id, { method: 'DELETE' });
+            btn.closest('tr').remove();
+        }
+    </script>
+</body>
+</html>

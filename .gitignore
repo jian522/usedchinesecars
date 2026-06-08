@@ -1,0 +1,10 @@
+# Ignore everything at repo root except jinba-export and .gitignore
+/*
+!/jinba-export
+!/.gitignore
+
+# Common ignores
+node_modules/
+.env
+*.db
+logs/

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="<%= htmlLang %>">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Testimonials - Jinba Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/design-tokens.css">
+    <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body class="admin-body">
+    <%- include('admin_sidebar') %>
+    <div class="admin-main">
+        <div class="admin-topbar">
+            <h1>Testimonials</h1>
+            <a href="/admin/testimonials/new" class="btn btn-primary">+ Add Testimonial</a>
+        </div>
+        <div class="admin-content">
+            <table class="admin-table" id="testimonialsTable">
+                <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Name</th>
+                        <th>Role</th>
+                        <th>Quote (EN)</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% testimonials.forEach(t => { %>
+                        <tr data-id="<%= t.id %>">
+                            <td>
+                                <% if (t.image_url && !t.image_url.startsWith('data:')) { %>
+                                    <img src="<%= t.image_url %>" alt="" width="48" height="48" style="border-radius:50%;object-fit:cover">
+                                <% } else { %>
+                                    <span style="display:inline-flex;width:48px;height:48px;border-radius:50%;background:#1a2744;color:#b8860b;align-items:center;justify-content:center;font-weight:700"><%= t.name.charAt(0) %></span>
+                                <% } %>
+                            </td>
+                            <td><strong><%= t.name %></strong></td>
+                            <td><%= t.role %></td>
+                            <td style="max-width:250px;font-size:.875rem;color:#666">"<%= (t.quote_en || t.quote_zh || '').substring(0,80) %>"</td>
+                            <td><span class="status-dot <%= t.is_active ? 'active' : '' %>"></span></td>
+                            <td>
+                                <a href="/admin/testimonials/<%= t.id %>/edit" class="btn btn-sm btn-outline">Edit</a>
+                                <button class="btn btn-sm btn-danger" onclick="deleteTestimonial(<%= t.id %>, this)">Delete</button>
+                            </td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script>
+        async function deleteTestimonial(id, btn) {
+            if (!confirm('Delete this testimonial?')) return;
+            await fetch('/admin/api/testimonials/' + id, { method: 'DELETE' });
+            btn.closest('tr').remove();
+        }
+    </script>
+</body>
+</html>

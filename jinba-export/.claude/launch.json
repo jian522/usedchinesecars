@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "jinba-app",
+      "runtimeExecutable": "pm2",
+      "runtimeArgs": ["start", "ecosystem.config.js"],
+      "port": 3001
+    }
+  ]
+}

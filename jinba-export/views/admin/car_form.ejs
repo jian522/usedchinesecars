@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="<%= htmlLang %>">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= car ? 'Edit' : 'Add' %> Car - Jinba Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/design-tokens.css">
+    <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body class="admin-body">
+    <%- include('admin_sidebar') %>
+    <div class="admin-main">
+        <div class="admin-topbar"><h1><%= car ? 'Edit Car' : 'Add Car' %></h1></div>
+        <div class="admin-content">
+            <form class="admin-form" id="carForm">
+                <div class="form-row">
+                    <div class="form-group"><label>Brand *</label><input type="text" name="brand" value="<%= car?.brand || '' %>" required></div>
+                    <div class="form-group"><label>Model *</label><input type="text" name="model" value="<%= car?.model || '' %>" required></div>
+                    <div class="form-group"><label>Year *</label><input type="number" name="year" value="<%= car?.year || '' %>" min="1990" max="2030" required></div>
+                    <div class="form-group"><label>Price *</label><input type="number" name="price" value="<%= car?.price || '' %>" required></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label>Mileage</label><input type="number" name="mileage" value="<%= car?.mileage || 0 %>"></div>
+                    <div class="form-group"><label>Fuel Type</label><select name="fuel_type"><option>汽油</option><option>柴油</option><option>混动</option><option>电动</option></select></div>
+                    <div class="form-group"><label>Transmission</label><select name="transmission"><option>自动</option><option>手动</option></select></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label>Description (中文)</label><textarea name="description_zh" rows="3"><%= car?.description_zh || '' %></textarea></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label>Description (English)</label><textarea name="description_en" rows="3"><%= car?.description_en || '' %></textarea></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label>Description (Русский)</label><textarea name="description_ru" rows="3"><%= car?.description_ru || '' %></textarea></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label>Description (العربية)</label><textarea name="description_ar" rows="3" dir="rtl"><%= car?.description_ar || '' %></textarea></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label>Featured</label><input type="checkbox" name="is_featured" value="1" <%= car?.is_featured ? 'checked' : '' %>></div>
+                    <div class="form-group"><label>New Arrival</label><input type="checkbox" name="is_new_arrival" value="1" <%= car?.is_new_arrival ? 'checked' : '' %>></div>
+                    <% if (car) { %>
+                        <div class="form-group"><label>Active</label><input type="checkbox" name="is_active" value="1" <%= car.is_active ? 'checked' : '' %>></div>
+                    <% } %>
+                </div>
+                <div class="form-group">
+                    <label>Images</label>
+                    <input type="file" name="images" multiple accept="image/*">
+                </div>
+                <% if (car?.images?.length) { %>
+                    <div class="existing-images">
+                        <% car.images.forEach(im => { %>
+                            <div class="existing-image"><img src="<%= im.url %>" width="120"><% if(im.is_primary) { %><span class="primary-badge">Primary</span><% } %></div>
+                        <% }) %>
+                    </div>
+                <% } %>
+                <button type="submit" class="btn btn-primary">Save</button>
+                <a href="/admin/cars" class="btn btn-outline">Cancel</a>
+            </form>
+        </div>
+    </div>
+    <script>
+        const carId = <%= car?.id || 'null' %>;
+        document.getElementById('carForm').addEventListener('submit', async e => {
+            e.preventDefault();
+            const form = new FormData(e.target);
+            const url = carId ? '/admin/api/cars/' + carId : '/admin/api/cars';
+            const method = carId ? 'PUT' : 'POST';
+            const res = await fetch(url, { method, body: form });
+            if (res.ok) { window.location = '/admin/cars'; }
+            else { alert('Error saving car'); }
+        });
+    </script>
+</body>
+</html>

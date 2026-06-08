@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="<%= htmlLang %>">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messages - Jinba Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/design-tokens.css">
+    <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body class="admin-body">
+    <%- include('admin_sidebar') %>
+    <div class="admin-main">
+        <div class="admin-topbar">
+            <h1>Messages</h1>
+            <div class="admin-topbar-actions">
+                <a href="?page=1" class="btn btn-sm <%= !req.query.unread ? 'btn-primary' : 'btn-outline' %>">All</a>
+                <a href="?page=1&unread=1" class="btn btn-sm <%= req.query.unread === '1' ? 'btn-primary' : 'btn-outline' %>">Unread</a>
+            </div>
+        </div>
+        <div class="admin-content">
+            <table class="admin-table">
+                <thead><tr><th></th><th>Car Model</th><th>Name</th><th>Email</th><th>Message</th><th>Date</th><th>Actions</th></tr></thead>
+                <tbody>
+                    <% data.forEach(contact => { %>
+                        <tr class="<%= !contact.is_read ? 'unread' : '' %>">
+                            <td><span class="status-dot <%= !contact.is_read ? 'unread-dot' : '' %>"></span></td>
+                            <td><%= contact.car_model || '-' %></td>
+                            <td><strong><%= contact.name %></strong></td>
+                            <td><%= contact.email %></td>
+                            <td style="max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"><%= contact.message %></td>
+                            <td><%= new Date(contact.created_at + 'Z').toLocaleDateString() %></td>
+                            <td class="actions-cell">
+                                <% if (!contact.is_read) { %>
+                                    <button class="btn btn-sm btn-primary" onclick="markRead(<%= contact.id %>, this)">Mark Read</button>
+                                <% } %>
+                                <button class="btn btn-sm btn-outline" onclick='openModal(<%- JSON.stringify(contact) %>)'>View</button>
+                                <button class="btn btn-sm btn-danger" onclick="deleteContact(<%= contact.id %>, this)">Delete</button>
+                            </td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+            <% if (totalPages > 1) { %>
+                <div class="pagination">
+                    <% for (let p = 1; p <= totalPages; p++) { %>
+                        <a href="?page=<%= p %><%= req.query.unread === '1' ? '&unread=1' : '' %>" class="page-link <%= p === page ? 'active' : '' %>"><%= p %></a>
+                    <% } %>
+                </div>
+            <% } %>
+        </div>
+    </div>
+    <script>
+        async function markRead(id, btn) {
+            await fetch('/admin/api/contacts/' + id + '/read', { method: 'POST' });
+            btn.closest('tr').classList.remove('unread');
+            btn.remove();
+        }
+
+        function openModal(data) {
+            document.getElementById('modalName').textContent = data.name;
+            document.getElementById('modalCar').textContent = data.car_model || '-';
+            document.getElementById('modalEmail').textContent = data.email;
+            document.getElementById('modalEmail').href = 'mailto:' + data.email;
+            document.getElementById('modalPhone').textContent = data.phone || 'N/A';
+            document.getElementById('modalLang').textContent = data.preferred_lang || 'zh';
+            document.getElementById('modalDate').textContent = data.created_at;
+            document.getElementById('modalMessage').textContent = data.message;
+            document.getElementById('contactModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('contactModal').classList.remove('active');
+        }
+
+        async function deleteContact(id, btn) {
+            if (!confirm('Delete this contact?')) return;
+            const res = await fetch('/admin/api/contacts/' + id, { method: 'DELETE' });
+            if (res.ok) {
+                btn.closest('tr').remove();
+            }
+        }
+    </script>
+
+    <div class="modal-overlay" id="contactModal" onclick="if(event.target===this)closeModal()">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalName"></h2>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="detail-row"><strong>Car Model:</strong> <span id="modalCar"></span></div>
+                <div class="detail-row"><strong>Email:</strong> <a id="modalEmail" href=""></a></div>
+                <div class="detail-row"><strong>Phone:</strong> <span id="modalPhone"></span></div>
+                <div class="detail-row"><strong>Language:</strong> <span id="modalLang"></span></div>
+                <div class="detail-row"><strong>Date:</strong> <span id="modalDate"></span></div>
+                <div class="detail-row full"><strong>Message:</strong><p id="modalMessage" class="modal-message"></p></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

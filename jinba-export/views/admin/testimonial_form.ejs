@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="<%= htmlLang %>">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= testimonial ? 'Edit' : 'Add' %> Testimonial - Jinba Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/design-tokens.css">
+    <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body class="admin-body">
+    <%- include('admin_sidebar') %>
+    <div class="admin-main">
+        <div class="admin-topbar"><h1><%= testimonial ? 'Edit Testimonial' : 'Add Testimonial' %></h1></div>
+        <div class="admin-content">
+            <form class="admin-form" id="testimonialForm">
+                <div class="form-row">
+                    <div class="form-group"><label>Name</label><input type="text" name="name" value="<%= testimonial?.name || '' %>" required></div>
+                    <div class="form-group"><label>Role</label><input type="text" name="role" value="<%= testimonial?.role || '' %>"></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label>Quote (中文)</label><textarea name="quote_zh" rows="3"><%= testimonial?.quote_zh || '' %></textarea></div>
+                    <div class="form-group"><label>Quote (English)</label><textarea name="quote_en" rows="3"><%= testimonial?.quote_en || '' %></textarea></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label>Quote (Русский)</label><textarea name="quote_ru" rows="3"><%= testimonial?.quote_ru || '' %></textarea></div>
+                    <div class="form-group"><label>Quote (العربية)</label><textarea name="quote_ar" rows="3" dir="rtl"><%= testimonial?.quote_ar || '' %></textarea></div>
+                </div>
+                <div class="form-group">
+                    <label>Photo</label>
+                    <% if (testimonial?.image_url && !testimonial.image_url.startsWith('data:')) { %>
+                        <img src="<%= testimonial.image_url %>" width="80" style="border-radius:50%;display:block;margin-bottom:.5rem">
+                    <% } %>
+                    <input type="file" name="image" accept="image/*">
+                </div>
+                <% if (testimonial) { %>
+                    <div class="form-group"><label>Active</label><input type="checkbox" name="is_active" value="1" <%= testimonial.is_active ? 'checked' : '' %>></div>
+                <% } %>
+                <button type="submit" class="btn btn-primary">Save</button>
+                <a href="/admin/testimonials" class="btn btn-outline">Cancel</a>
+            </form>
+        </div>
+    </div>
+    <script>
+        const testimonialId = <%= testimonial?.id || 'null' %>;
+        document.getElementById('testimonialForm').addEventListener('submit', async e => {
+            e.preventDefault();
+            const form = new FormData(e.target);
+            const url = testimonialId ? '/admin/api/testimonials/' + testimonialId : '/admin/api/testimonials';
+            const method = testimonialId ? 'PUT' : 'POST';
+            const res = await fetch(url, { method, body: form });
+            if (res.ok) { window.location = '/admin/testimonials'; }
+        });
+    </script>
+</body>
+</html>

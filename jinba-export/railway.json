@@ -1,0 +1,12 @@
+{
+  "build": {
+    "builder": "nixpacks",
+    "nixpacksConfigPath": "railway.json"
+  },
+  "deploy": {
+    "startCommand": "npm start",
+    "healthcheckPath": "/health",
+    "healthcheckTimeout": 30,
+    "restartPolicyType": "on_failure"
+  }
+}

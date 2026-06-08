@@ -1,0 +1,115 @@
+
+<section class="page-header">
+    <div class="container">
+        <h1><%= __('cars_title') %></h1>
+        <p><%= __('cars_subtitle') %></p>
+    </div>
+</section>
+
+<section class="section cars-page">
+    <div class="container">
+        <!-- Search Bar -->
+        <div class="cars-search-bar">
+            <form class="search-form" method="GET" action="/cars">
+                <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input type="text" name="keyword" class="search-input" placeholder="<%= __('search_placeholder') || '搜索品牌或车型...' %>" value="<%= filters.keyword || '' %>">
+                <% if (filters.keyword) { %>
+                    <a href="?<%= new URLSearchParams({...filters, keyword:undefined}).toString() %>" class="search-clear">&times;</a>
+                <% } %>
+                <button type="submit" class="btn btn-gold search-btn"><%= __('form_submit') %></button>
+            </form>
+        </div>
+
+        <div class="cars-layout">
+            <!-- Filters Sidebar -->
+            <aside class="filters-sidebar" id="filtersSidebar">
+                <div class="filter-block">
+                    <h4><%= __('filter_brand') %></h4>
+                    <div class="filter-options">
+                        <a href="?<%= new URLSearchParams({...filters, brand:undefined}).toString() %>" class="<%= !filters.brand ? 'active' : '' %>"><%= __('filter_all') %></a>
+                        <% brands.forEach(b => { %>
+                            <a href="?<%= new URLSearchParams({...filters, brand:b.brand}).toString() %>" class="<%= filters.brand === b.brand ? 'active' : '' %>"><%= b.brand %></a>
+                        <% }) %>
+                    </div>
+                </div>
+                <div class="filter-block">
+                    <h4><%= __('filter_fuel') %></h4>
+                    <div class="filter-options">
+                        <a href="?<%= new URLSearchParams({...filters, fuel:undefined}).toString() %>" class="<%= !filters.fuel ? 'active' : '' %>"><%= __('filter_all') %></a>
+                        <a href="?<%= new URLSearchParams({...filters, fuel:'汽油'}).toString() %>" class="<%= filters.fuel === '汽油' ? 'active' : '' %>"><%= __('fuel_gasoline') %></a>
+                        <a href="?<%= new URLSearchParams({...filters, fuel:'混动'}).toString() %>" class="<%= filters.fuel === '混动' ? 'active' : '' %>"><%= __('fuel_hybrid') %></a>
+                        <a href="?<%= new URLSearchParams({...filters, fuel:'电动'}).toString() %>" class="<%= filters.fuel === '电动' ? 'active' : '' %>"><%= __('fuel_electric') %></a>
+                    </div>
+                </div>
+                <div class="filter-block">
+                    <h4><%= __('filter_transmission') || '变速箱' %></h4>
+                    <div class="filter-options">
+                        <a href="?<%= new URLSearchParams({...filters, transmission:undefined}).toString() %>" class="<%= !filters.transmission ? 'active' : '' %>"><%= __('filter_all') %></a>
+                        <% transmissions.forEach(t => { %>
+                            <a href="?<%= new URLSearchParams({...filters, transmission:t.transmission}).toString() %>" class="<%= filters.transmission === t.transmission ? 'active' : '' %>"><%= t.transmission %></a>
+                        <% }) %>
+                    </div>
+                </div>
+                <div class="filter-block">
+                    <h4><%= __('filter_year') %></h4>
+                    <div class="filter-options">
+                        <a href="?<%= new URLSearchParams({...filters, minYear:undefined}).toString() %>" class="<%= !filters.minYear ? 'active' : '' %>"><%= __('filter_all') %></a>
+                        <a href="?<%= new URLSearchParams({...filters, minYear:'2020'}).toString() %>" class="<%= filters.minYear === '2020' ? 'active' : '' %>">2020+</a>
+                        <a href="?<%= new URLSearchParams({...filters, minYear:'2019'}).toString() %>" class="<%= filters.minYear === '2019' ? 'active' : '' %>">2019+</a>
+                        <a href="?<%= new URLSearchParams({...filters, minYear:'2018'}).toString() %>" class="<%= filters.minYear === '2018' ? 'active' : '' %>">2018+</a>
+                    </div>
+                </div>
+                <div class="filter-block">
+                    <h4><%= __('filter_price') || '价格区间' %></h4>
+                    <div class="filter-price-inputs">
+                        <form method="GET" action="/cars" class="price-range-form">
+                            <% Object.entries(filters).filter(([k]) => k !== 'minPrice' && k !== 'maxPrice').forEach(([k, v]) => { %>
+                                <input type="hidden" name="<%= k %>" value="<%= v %>">
+                            <% }) %>
+                            <input type="number" name="minPrice" class="price-input" placeholder="<%= __('filter_min') || '最低' %>" value="<%= filters.minPrice || '' %>">
+                            <span class="price-sep">&ndash;</span>
+                            <input type="number" name="maxPrice" class="price-input" placeholder="<%= __('filter_max') || '最高' %>" value="<%= filters.maxPrice || '' %>">
+                            <button type="submit" class="btn btn-sm btn-gold"><%= __('filter_apply') || '确定' %></button>
+                        </form>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Car Grid -->
+            <div class="cars-main">
+                <div class="cars-toolbar">
+                    <span class="cars-count"><%= cars.total %> <%= __('cars_found') %></span>
+                    <% if (filters.keyword) { %>
+                        <span class="cars-search-term">"<%= filters.keyword %>"</span>
+                    <% } %>
+                    <button class="filter-toggle-btn" id="filterToggle"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg> <%= __('filter_label') %></button>
+                </div>
+
+                <% if (cars.data.length === 0) { %>
+                    <div class="empty-state">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                        <p><%= __('no_cars_found') %></p>
+                        <a href="/cars" class="btn btn-outline"><%= __('filter_reset') || '清除筛选' %></a>
+                    </div>
+                <% } else { %>
+                    <div class="car-grid">
+                        <% cars.data.forEach(car => { %>
+                            <%- include('../partials/car_card', { car }) %>
+                        <% }) %>
+                    </div>
+                <% } %>
+
+                <!-- Pagination -->
+                <% if (cars.totalPages > 1) { %>
+                    <div class="pagination">
+                        <% for (let p = 1; p <= cars.totalPages; p++) { %>
+                            <a href="?<%= new URLSearchParams({...filters, page:p}).toString() %>" class="page-link <%= p === cars.page ? 'active' : '' %>"><%= p %></a>
+                        <% } %>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="/js/filters.js"></script>

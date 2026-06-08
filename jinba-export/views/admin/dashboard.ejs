@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="<%= htmlLang %>">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Jinba Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/design-tokens.css">
+    <link rel="stylesheet" href="/css/admin.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4/dist/chart.umd.min.js"></script>
+</head>
+<body class="admin-body">
+    <%- include('admin_sidebar') %>
+    <div class="admin-main">
+        <div class="admin-topbar">
+            <h1>Dashboard</h1>
+            <div class="admin-user">
+                <span><%= req.user.username %></span>
+                <a href="/admin/logout" class="btn btn-sm">Logout</a>
+            </div>
+        </div>
+        <div class="admin-content">
+            <div class="stats-cards">
+                <div class="stat-card">
+                    <div class="stat-card-icon" style="background:#e8f4f8"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1a2744" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>
+                    <div class="stat-card-info"><span class="stat-card-value"><%= carCount %></span><span class="stat-card-label">Total Cars</span></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-icon" style="background:#fef3e0"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#b8860b" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+                    <div class="stat-card-info"><span class="stat-card-value"><%= countryCount %></span><span class="stat-card-label">Countries</span></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-icon" style="background:#e8f5e9"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2e7d32" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+                    <div class="stat-card-info"><span class="stat-card-value"><%= unreadContacts %></span><span class="stat-card-label">Unread Messages</span></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-icon" style="background:#f3e5f5"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7b1fa2" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+                    <div class="stat-card-info"><span class="stat-card-value"><%= todayViews %></span><span class="stat-card-label">Today Views</span></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-icon" style="background:#e0f2f1"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00695c" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+                    <div class="stat-card-info"><span class="stat-card-value"><%= contactsStats.thisMonth %> / <%= contactsStats.total %></span><span class="stat-card-label">Contacts (Month / Total)</span></div>
+                </div>
+            </div>
+            <div class="chart-container">
+                <h3>Weekly Traffic</h3>
+                <canvas id="trafficChart" width="800" height="300"></canvas>
+            </div>
+
+            <div class="charts-grid">
+                <div class="chart-container">
+                    <h3>Brand Distribution</h3>
+                    <canvas id="brandChart" width="400" height="400"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3>Top Models</h3>
+                    <canvas id="modelChart" width="400" height="400"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3>Contacts (14 days)</h3>
+                    <canvas id="contactsChart" width="400" height="400"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const palette = ['#1a2744','#b8860b','#2e7d32','#1565c0','#6a1b9a','#e65100','#c62828','#00695c'];
+
+        // Traffic chart
+        const ctx = document.getElementById('trafficChart').getContext('2d');
+        const trafficData = <%- JSON.stringify(traffic) %>;
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: trafficData.map(d => d.label),
+                datasets: [{ label: 'Visits', data: trafficData.map(d => d.count), backgroundColor: '#1a2744', borderRadius: 4 }]
+            },
+            options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } }
+        });
+
+        // Brand Distribution — Doughnut
+        const brandData = <%- JSON.stringify(brandDistribution) %>;
+        const brandColors = brandData.map((_, i) => palette[i % palette.length]);
+        new Chart(document.getElementById('brandChart').getContext('2d'), {
+            type: 'doughnut',
+            data: {
+                labels: brandData.map(d => d.brand),
+                datasets: [{ data: brandData.map(d => d.count), backgroundColor: brandColors }]
+            },
+            options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'bottom' } } }
+        });
+
+        // Top Models — Horizontal Bar
+        const modelData = <%- JSON.stringify(topModels) %>;
+        new Chart(document.getElementById('modelChart').getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: modelData.map(d => d.label),
+                datasets: [{ label: 'Count', data: modelData.map(d => d.count), backgroundColor: '#b8860b', borderRadius: 4 }]
+            },
+            options: { indexAxis: 'y', responsive: true, maintainAspectRatio: true, plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true, ticks: { stepSize: 1 } } } }
+        });
+
+        // Contacts Trend — Line
+        const contactsTrendData = <%- JSON.stringify(contactsTrend) %>;
+        new Chart(document.getElementById('contactsChart').getContext('2d'), {
+            type: 'line',
+            data: {
+                labels: contactsTrendData.map(d => d.label),
+                datasets: [{ label: 'Contacts', data: contactsTrendData.map(d => d.count), borderColor: '#2e7d32', backgroundColor: 'rgba(46,125,50,0.1)', borderWidth: 2, fill: true, tension: 0.3 }]
+            },
+            options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } }
+        });
+    </script>
+</body>
+</html>

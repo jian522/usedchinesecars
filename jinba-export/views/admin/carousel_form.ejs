@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="<%= htmlLang %>">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= slide ? 'Edit' : 'Add' %> Slide - Jinba Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/design-tokens.css">
+    <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body class="admin-body">
+    <%- include('admin_sidebar') %>
+    <div class="admin-main">
+        <div class="admin-topbar"><h1><%= slide ? 'Edit Slide' : 'Add Slide' %></h1></div>
+        <div class="admin-content">
+            <form class="admin-form" id="slideForm">
+                <div class="form-row">
+                    <div class="form-group"><label>Title (中文)</label><input type="text" name="title_zh" value="<%= slide?.title_zh || '' %>"></div>
+                    <div class="form-group"><label>Title (English)</label><input type="text" name="title_en" value="<%= slide?.title_en || '' %>"></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label>Title (Русский)</label><input type="text" name="title_ru" value="<%= slide?.title_ru || '' %>"></div>
+                    <div class="form-group"><label>Title (العربية)</label><input type="text" name="title_ar" value="<%= slide?.title_ar || '' %>" dir="rtl"></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label>Description (中文)</label><textarea name="description_zh" rows="2"><%= slide?.description_zh || '' %></textarea></div>
+                    <div class="form-group"><label>Description (English)</label><textarea name="description_en" rows="2"><%= slide?.description_en || '' %></textarea></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label>Button Text (中文)</label><input type="text" name="button_text_zh" value="<%= slide?.button_text_zh || '' %>"></div>
+                    <div class="form-group"><label>Button Text (English)</label><input type="text" name="button_text_en" value="<%= slide?.button_text_en || '' %>"></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label>Button Link</label><input type="text" name="button_link" value="<%= slide?.button_link || 'cars' %>"></div>
+                    <div class="form-group"><label>Sort Order</label><input type="number" name="sort_order" value="<%= slide?.sort_order || 0 %>"></div>
+                </div>
+                <div class="form-group">
+                    <label>Image</label>
+                    <% if (slide?.image_url) { %><img src="<%= slide.image_url %>" width="200" style="display:block;margin-bottom:.5rem"><% } %>
+                    <input type="file" name="image" accept="image/*">
+                </div>
+                <% if (slide) { %>
+                    <div class="form-group"><label>Active</label><input type="checkbox" name="is_active" value="1" <%= slide.is_active ? 'checked' : '' %>></div>
+                <% } %>
+                <button type="submit" class="btn btn-primary">Save</button>
+                <a href="/admin/carousel" class="btn btn-outline">Cancel</a>
+            </form>
+        </div>
+    </div>
+    <script>
+        const slideId = <%= slide?.id || 'null' %>;
+        document.getElementById('slideForm').addEventListener('submit', async e => {
+            e.preventDefault();
+            const form = new FormData(e.target);
+            const url = slideId ? '/admin/api/carousel/' + slideId : '/admin/api/carousel';
+            const method = slideId ? 'PUT' : 'POST';
+            const res = await fetch(url, { method, body: form });
+            if (res.ok) { window.location = '/admin/carousel'; }
+        });
+    </script>
+</body>
+</html>

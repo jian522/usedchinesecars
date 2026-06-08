@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="<%= htmlLang %>">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cars - Jinba Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/design-tokens.css">
+    <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body class="admin-body">
+    <%- include('admin_sidebar') %>
+    <div class="admin-main">
+        <div class="admin-topbar">
+            <h1>Cars</h1>
+            <div class="admin-topbar-actions">
+                <a href="/admin/cars/new" class="btn btn-primary">+ Add Car</a>
+                <button class="btn btn-outline" onclick="document.getElementById('csvUpload').click()">Import CSV</button>
+                <input type="file" id="csvUpload" accept=".csv" style="display:none" onchange="importCSV(this)">
+            </div>
+        </div>
+        <div class="admin-content">
+            <table class="admin-table">
+                <thead><tr><th>Image</th><th>Brand</th><th>Model</th><th>Year</th><th>Price</th><th>Status</th><th>Actions</th></tr></thead>
+                <tbody>
+                    <% cars.data.forEach(car => { %>
+                        <tr>
+                            <td>
+                                <% const primary = car.images?.find(im => im.is_primary) || car.images?.[0]; %>
+                                <% if (primary) { %><img src="<%= primary.url %>" alt="" width="60" height="45" style="object-fit:cover;border-radius:4px"><% } %>
+                            </td>
+                            <td><%= car.brand %></td>
+                            <td><%= car.model %></td>
+                            <td><%= car.year %></td>
+                            <td>&yen;<%= car.price.toLocaleString() %></td>
+                            <td><span class="status-dot <%= car.is_active ? 'active' : '' %>"></span> <%= car.is_active ? 'Active' : 'Inactive' %></td>
+                            <td class="actions-cell">
+                                <a href="/admin/cars/<%= car.id %>/edit" class="btn btn-sm btn-outline">Edit</a>
+                                <button class="btn btn-sm btn-danger" onclick="deleteCar(<%= car.id %>, this)">Delete</button>
+                            </td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+            <% if (cars.totalPages > 1) { %>
+                <div class="pagination">
+                    <% for (let p = 1; p <= cars.totalPages; p++) { %>
+                        <a href="?page=<%= p %>" class="page-link <%= p === cars.page ? 'active' : '' %>"><%= p %></a>
+                    <% } %>
+                </div>
+            <% } %>
+        </div>
+    </div>
+    <script>
+        async function deleteCar(id, btn) {
+            if (!confirm('Delete this car?')) return;
+            const res = await fetch('/admin/api/cars/' + id, { method: 'DELETE' });
+            if (res.ok) btn.closest('tr').remove();
+        }
+        async function importCSV(input) {
+            if (!input.files[0]) return;
+            const form = new FormData();
+            form.append('csv', input.files[0]);
+            const res = await fetch('/admin/api/cars/import', { method: 'POST', body: form });
+            const data = await res.json();
+            alert('Imported ' + data.imported + ' cars');
+            location.reload();
+        }
+    </script>
+</body>
+</html>

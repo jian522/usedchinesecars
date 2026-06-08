@@ -1,0 +1,27 @@
+<div class="car-card">
+    <a href="/cars/<%= car.id %>" class="car-card-image">
+        <% const primary = car.images && car.images.find(im => im.is_primary) || car.images?.[0]; %>
+        <% if (primary) { %>
+            <img src="<%= primary.url %>" alt="<%= car.brand %> <%= car.model %>" loading="lazy" width="400" height="300">
+        <% } else { %>
+            <div class="car-card-placeholder">
+                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+            </div>
+        <% } %>
+        <% if (car.is_featured) { %>
+            <span class="badge badge-featured"><%= __('badge_featured') %></span>
+        <% } %>
+        <% if (car.is_new_arrival) { %>
+            <span class="badge badge-new"><%= __('badge_new') %></span>
+        <% } %>
+    </a>
+    <div class="car-card-body">
+        <h3 class="car-card-title"><%= car.brand %> <%= car.model %></h3>
+        <div class="car-card-meta">
+            <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> <%= car.year %></span>
+            <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg> <%= car.mileage.toLocaleString() %> km</span>
+            <span><%= car.fuel_type %></span>
+        </div>
+        <div class="car-card-price"><%= __('currency_symbol') %><%= car.price.toLocaleString() %></div>
+    </div>
+</div>

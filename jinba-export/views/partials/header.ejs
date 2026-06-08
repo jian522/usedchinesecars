@@ -1,0 +1,31 @@
+<header class="site-header">
+    <div class="header-inner container">
+        <a href="/" class="logo">
+            <span class="logo-icon"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="6" fill="#1a2744"/><path d="M8 16L11 12L20 21L15 24L8 16Z" fill="#b8860b"/><path d="M16 8L21 12L17 20L12 16L16 8Z" fill="#d4a745"/></svg></span>
+            <span class="logo-text"><%= __('company_name_short') %></span>
+        </a>
+
+        <nav class="main-nav" id="mainNav">
+            <a href="/"><%= __('nav_home') %></a>
+            <a href="/cars"><%= __('nav_cars') %></a>
+            <a href="/services"><%= __('nav_services') %></a>
+            <a href="/about"><%= __('nav_about') %></a>
+            <a href="/contact"><%= __('nav_contact') %></a>
+        </nav>
+
+        <div class="header-actions">
+            <div class="lang-switcher">
+                <% const langs = {zh:'中文', en:'EN', ru:'RU', ar:'عربي'}; %>
+                <button class="lang-current" id="langToggle"><%= langs[lang] || '中文' %></button>
+                <div class="lang-dropdown" id="langDropdown">
+                    <% for (const [code, label] of Object.entries(langs)) { %>
+                        <a href="?lang=<%= code %>" class="<%= lang === code ? 'active' : '' %>"><%= label %></a>
+                    <% } %>
+                </div>
+            </div>
+            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </div>
+</header>

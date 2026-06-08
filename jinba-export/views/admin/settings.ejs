@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="<%= htmlLang %>">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - Jinba Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/design-tokens.css">
+    <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body class="admin-body">
+    <%- include('admin_sidebar') %>
+    <div class="admin-main">
+        <div class="admin-topbar"><h1>Settings</h1></div>
+        <div class="admin-content">
+            <form class="admin-form" id="settingsForm">
+                <h3>Company Info</h3>
+                <div class="form-row">
+                    <div class="form-group"><label>Company Name (中文)</label><input type="text" name="company_name_zh" value="<%= settings.company_name_zh || '' %>"></div>
+                    <div class="form-group"><label>Company Name (English)</label><input type="text" name="company_name_en" value="<%= settings.company_name_en || '' %>"></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label>Phone</label><input type="text" name="phone" value="<%= settings.phone || '' %>"></div>
+                    <div class="form-group"><label>WhatsApp</label><input type="text" name="whatsapp" value="<%= settings.whatsapp || '' %>"></div>
+                    <div class="form-group"><label>Email</label><input type="email" name="email" value="<%= settings.email || '' %>"></div>
+                </div>
+                <div class="form-group"><label>Address (中文)</label><input type="text" name="address_zh" value="<%= settings.address_zh || '' %>"></div>
+                <div class="form-group"><label>Address (English)</label><input type="text" name="address_en" value="<%= settings.address_en || '' %>"></div>
+
+                <h3 style="margin-top:2rem">SEO</h3>
+                <div class="form-group"><label>Meta Description (中文)</label><textarea name="meta_description_zh" rows="3"><%= settings.meta_description_zh || '' %></textarea></div>
+                <div class="form-group"><label>Meta Description (English)</label><textarea name="meta_description_en" rows="3"><%= settings.meta_description_en || '' %></textarea></div>
+                <div class="form-group"><label>Meta Keywords</label><input type="text" name="meta_keywords" value="<%= settings.meta_keywords || '' %>"></div>
+
+                <h3 style="margin-top:2rem">Analytics</h3>
+                <div class="form-group"><label>Google Analytics ID (GA4)</label><input type="text" name="ga_id" value="<%= settings.ga_id || '' %>" placeholder="G-XXXXXXXXXX"></div>
+                <div class="form-group"><label>Google Analytics 4 Measurement ID (alternative)</label><input type="text" name="ga_measurement_id" value="<%= settings.ga_measurement_id || '' %>" placeholder="G-XXXXXXXXXX"></div>
+
+                <button type="submit" class="btn btn-primary">Save Settings</button>
+            </form>
+
+            <hr style="margin:2rem 0">
+
+            <h3>Change Password</h3>
+            <form class="admin-form" id="passwordForm" style="max-width:400px">
+                <div class="form-group"><label>Current Password</label><input type="password" name="oldPassword" required></div>
+                <div class="form-group"><label>New Password</label><input type="password" name="newPassword" required minlength="6"></div>
+                <button type="submit" class="btn btn-primary">Change Password</button>
+            </form>
+        </div>
+    </div>
+    <script>
+        document.getElementById('settingsForm').addEventListener('submit', async e => {
+            e.preventDefault();
+            const form = new FormData(e.target);
+            const body = Object.fromEntries(form.entries());
+            const res = await fetch('/admin/api/settings', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body)
+            });
+            if (res.ok) alert('Settings saved');
+        });
+        document.getElementById('passwordForm').addEventListener('submit', async e => {
+            e.preventDefault();
+            const form = new FormData(e.target);
+            const body = Object.fromEntries(form.entries());
+            const res = await fetch('/admin/api/change-password', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body)
+            });
+            const data = await res.json();
+            alert(data.success ? 'Password changed' : data.message);
+            if (data.success) e.target.reset();
+        });
+    </script>
+</body>
+</html>

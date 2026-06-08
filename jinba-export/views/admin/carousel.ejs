@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="<%= htmlLang %>">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carousel - Jinba Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/design-tokens.css">
+    <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body class="admin-body">
+    <%- include('admin_sidebar') %>
+    <div class="admin-main">
+        <div class="admin-topbar">
+            <h1>Carousel Slides</h1>
+            <a href="/admin/carousel/new" class="btn btn-primary">+ Add Slide</a>
+        </div>
+        <div class="admin-content">
+            <div class="carousel-order-list" id="carouselOrder">
+                <% slides.forEach(s => { %>
+                    <div class="carousel-order-item" data-id="<%= s.id %>">
+                        <span class="order-handle">&#9776;</span>
+                        <img src="<%= s.image_url %>" alt="" width="80" height="45" style="object-fit:cover;border-radius:4px">
+                        <span><%= s.title_zh || s.title_en %></span>
+                        <span class="status-dot <%= s.is_active ? 'active' : '' %>"></span>
+                        <a href="/admin/carousel/<%= s.id %>/edit" class="btn btn-sm btn-outline">Edit</a>
+                        <button class="btn btn-sm btn-danger" onclick="deleteSlide(<%= s.id %>, this)">Delete</button>
+                    </div>
+                <% }) %>
+            </div>
+            <button class="btn btn-outline" id="saveOrder" style="margin-top:1rem">Save Order</button>
+        </div>
+    </div>
+    <script>
+        async function deleteSlide(id, btn) {
+            if (!confirm('Delete this slide?')) return;
+            await fetch('/admin/api/carousel/' + id, { method: 'DELETE' });
+            btn.closest('.carousel-order-item').remove();
+        }
+        document.getElementById('saveOrder').addEventListener('click', async () => {
+            const ids = [...document.querySelectorAll('.carousel-order-item')].map(el => el.dataset.id);
+            await fetch('/admin/api/carousel/reorder', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ ids })
+            });
+            alert('Order saved');
+        });
+    </script>
+</body>
+</html>

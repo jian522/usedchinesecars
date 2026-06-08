@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="<%= htmlLang %>">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= country ? 'Edit' : 'Add' %> Country - Jinba Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/design-tokens.css">
+    <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body class="admin-body">
+    <%- include('admin_sidebar') %>
+    <div class="admin-main">
+        <div class="admin-topbar"><h1><%= country ? 'Edit Country' : 'Add Country' %></h1></div>
+        <div class="admin-content">
+            <form class="admin-form" id="countryForm">
+                <div class="form-row">
+                    <div class="form-group"><label>Name (中文) *</label><input type="text" name="name_zh" value="<%= country?.name_zh || '' %>" required></div>
+                    <div class="form-group"><label>Name (English) *</label><input type="text" name="name_en" value="<%= country?.name_en || '' %>" required></div>
+                    <div class="form-group"><label>Name (Русский)</label><input type="text" name="name_ru" value="<%= country?.name_ru || '' %>"></div>
+                    <div class="form-group"><label>Name (العربية)</label><input type="text" name="name_ar" value="<%= country?.name_ar || '' %>" dir="rtl"></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label>ISO Code</label><input type="text" name="iso_code" value="<%= country?.iso_code || '' %>" maxlength="2"></div>
+                    <div class="form-group"><label>Region</label><select name="region"><option value="asia">Asia</option><option value="middleeast">Middle East</option><option value="africa">Africa</option><option value="centralasia">Central Asia</option><option value="europe">Europe</option><option value="americas">Americas</option></select></div>
+                    <div class="form-group"><label>Latitude</label><input type="number" step="any" name="centroid_lat" value="<%= country?.centroid_lat || '' %>"></div>
+                    <div class="form-group"><label>Longitude</label><input type="number" step="any" name="centroid_lng" value="<%= country?.centroid_lng || '' %>"></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label>Trade Volume</label><input type="text" name="trade_volume" value="<%= country?.trade_volume || '' %>"></div>
+                    <div class="form-group"><label>Serving Ports</label><input type="text" name="serving_ports" value="<%= country?.serving_ports || '' %>"></div>
+                    <div class="form-group"><label>Popular Models</label><input type="text" name="popular_models" value="<%= country?.popular_models || '' %>"></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label>Description (中文)</label><textarea name="description_zh" rows="2"><%= country?.description_zh || '' %></textarea></div>
+                    <div class="form-group"><label>Description (English)</label><textarea name="description_en" rows="2"><%= country?.description_en || '' %></textarea></div>
+                </div>
+                <% if (country) { %>
+                    <div class="form-group"><label>Active</label><input type="checkbox" name="is_active" value="1" <%= country.is_active ? 'checked' : '' %>></div>
+                <% } %>
+                <button type="submit" class="btn btn-primary">Save</button>
+                <a href="/admin/countries" class="btn btn-outline">Cancel</a>
+            </form>
+        </div>
+    </div>
+    <script>
+        const countryId = <%= country?.id || 'null' %>;
+        document.getElementById('countryForm').addEventListener('submit', async e => {
+            e.preventDefault();
+            const form = new FormData(e.target);
+            const body = Object.fromEntries(form.entries());
+            const url = countryId ? '/admin/api/countries/' + countryId : '/admin/api/countries';
+            const method = countryId ? 'PUT' : 'POST';
+            const res = await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+            if (res.ok) { window.location = '/admin/countries'; }
+        });
+    </script>
+</body>
+</html>
