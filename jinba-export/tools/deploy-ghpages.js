@@ -38,15 +38,18 @@ try {
   process.exit(1);
 }
 
-// Step 4: Pull latest main
-console.log('Step 3: Pulling latest main branch...');
-execSync('git pull origin main', { cwd: REPO_ROOT, stdio: 'inherit' });
+// Step 4: Sync with remote main (clean reset)
+console.log('Step 3: Syncing with remote main branch...');
+execSync('git fetch origin main', { cwd: REPO_ROOT, stdio: 'inherit' });
+execSync('git reset --hard origin/main', { cwd: REPO_ROOT, stdio: 'inherit' });
+console.log('✓ Synced with origin/main');
 
 // Step 5: Replace repo root files with dist/ content
 console.log('Step 4: Copying generated files to repo root...');
 
-// Remove old files (except .git)
-const oldFiles = fs.readdirSync(REPO_ROOT).filter(f => !f.startsWith('.git') && f !== '.git');
+// Remove old files (except .git and jinba-export/ which has our dist/ files)
+const keepDirs = new Set(['.git', 'jinba-export']);
+const oldFiles = fs.readdirSync(REPO_ROOT).filter(f => !keepDirs.has(f));
 for (const f of oldFiles) {
   const fp = path.join(REPO_ROOT, f);
   try {
