@@ -6,7 +6,9 @@
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js",
-    "seed": "node database/seed.js"
+    "seed": "node database/seed.js",
+    "static": "node tools/static-generator.js",
+    "deploy": "node tools/deploy-ghpages.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

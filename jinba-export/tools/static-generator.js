@@ -564,9 +564,276 @@ function escapeHtml(str) {
   return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
+// ========== CAR DETAIL PAGES ==========
+function generateCarDetailPage(car) {
+  const img = getCarImage(car);
+  const year = new Date().getFullYear();
+  const title = `${car.brand} ${car.model} ${car.year} - 价格¥${fmtPrice(car.price)} | 金霸二手车 Jinba Auto Export`;
+  const desc = `${car.year}年${car.brand} ${car.model}，${fmtMileage(car.mileage)}km，${car.fuel_type||'燃油'}，${car.transmission||''}。江西新余可看车，出口全球。中国二手车出口，品质保障。`;
+
+  const allImages = (car.images || []).filter(i => i.url);
+  const galleryHTML = allImages.length > 1
+    ? allImages.map((im, i) =>
+        `<div class="detail-gallery-item${i===0?' active':''}" data-index="${i}">
+          <img src="${im.url}" alt="${escapeHtml(car.brand+' '+car.model)} - 图片${i+1}" loading="${i===0?'eager':'lazy'}" width="800" height="600">
+        </div>`).join('\n        ')
+    : `<div class="detail-gallery-item active"><img src="${img}" alt="${escapeHtml(car.brand+' '+car.model)}" loading="eager" width="800" height="600"></div>`;
+
+  return `<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>${escapeHtml(title)}</title>
+<meta name="description" content="${escapeHtml(desc)}">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://jinbacars.com/cars/${car.id}">
+<meta property="og:type" content="product">
+<meta property="og:url" content="https://jinbacars.com/cars/${car.id}">
+<meta property="og:title" content="${escapeHtml(title)}">
+<meta property="og:description" content="${escapeHtml(desc)}">
+<meta property="og:image" content="${img}">
+<style>
+:root{--navy:#1a1a2e;--gold:#b8860b;--gold-light:#d4a843;--gray:#555;--light-gray:#e8e8e8;--white:#fff;--bg:#f8f7f4;--text:#333;--red:#c0392b;--green:#27ae60;--font:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans SC',sans-serif}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font);color:var(--text);background:var(--white);font-size:16px;line-height:1.6}
+.container{max-width:1200px;margin:0 auto;padding:0 20px}
+a{text-decoration:none;color:inherit}
+img{max-width:100%;height:auto}
+.site-header{position:sticky;top:0;z-index:100;background:var(--white);border-bottom:1px solid var(--light-gray);height:70px}
+.header-inner{display:flex;align-items:center;justify-content:space-between;height:100%}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:1.125rem;color:var(--navy)}
+.main-nav{display:flex;gap:32px}
+.main-nav a{font-size:.9375rem;font-weight:500;color:var(--gray);transition:color .2s}
+.main-nav a:hover{color:var(--navy)}
+.page-header{background:var(--navy);padding:50px 0;text-align:center;border-bottom:3px solid var(--gold)}
+.page-header h1{font-size:2rem;font-weight:700;color:var(--white);margin-bottom:8px}
+.page-header p{color:rgba(255,255,255,.7);font-size:1rem}
+.detail-layout{display:grid;grid-template-columns:1fr 1fr;gap:40px;padding:50px 0}
+@media(max-width:768px){.detail-layout{grid-template-columns:1fr;gap:24px}}
+.detail-gallery{position:relative;border-radius:12px;overflow:hidden;background:var(--bg);min-height:400px}
+.detail-gallery-item{display:none}
+.detail-gallery-item.active{display:block}
+.detail-gallery-item img{width:100%;height:auto;display:block}
+.detail-info h2{font-size:.875rem;text-transform:uppercase;color:var(--gold);letter-spacing:1px;margin-bottom:8px}
+.detail-info h1{font-size:1.75rem;font-weight:700;color:var(--navy);margin-bottom:16px}
+.detail-price{font-size:2.25rem;font-weight:800;color:var(--red);margin-bottom:24px}
+.specs-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px}
+.spec-item{padding:12px 16px;background:var(--bg);border-radius:8px}
+.spec-label{font-size:.75rem;color:var(--gray);text-transform:uppercase}
+.spec-value{font-size:1rem;font-weight:600;color:var(--navy);margin-top:2px}
+.detail-desc{padding:40px 0 60px;background:var(--bg)}
+.detail-desc h3{font-size:1.25rem;font-weight:700;color:var(--navy);margin-bottom:16px}
+.detail-desc p{color:var(--gray);line-height:1.8;max-width:800px}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:14px 32px;border-radius:6px;font-weight:600;font-size:.9375rem;border:none;cursor:pointer;transition:all .3s}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold-light));color:var(--white);box-shadow:0 4px 15px rgba(184,134,11,.3)}
+.btn-gold:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(184,134,11,.4)}
+.btn-outline{background:transparent;border:2px solid var(--gold);color:var(--gold)}
+.btn-outline:hover{background:var(--gold);color:var(--white)}
+.btn-group{display:flex;gap:12px;flex-wrap:wrap}
+.site-footer{background:var(--navy);color:rgba(255,255,255,.7);padding:40px 0 20px;border-top:3px solid var(--gold);text-align:center;font-size:.875rem}
+.back-link{display:inline-block;margin-bottom:16px;color:var(--gold);font-weight:500}
+.back-link:hover{text-decoration:underline}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="/" class="logo"><svg width="36" height="36" viewBox="0 0 36 36" fill="none"><rect width="36" height="36" rx="8" fill="#b8860b"/><text x="18" y="24" text-anchor="middle" fill="white" font-weight="bold" font-size="18">J</text></svg> 金霸二手车</a>
+    <nav class="main-nav">
+      <a href="/">首页</a>
+      <a href="/cars">库存车辆</a>
+      <a href="/about">关于我们</a>
+      <a href="/contact">联系我们</a>
+    </nav>
+  </div>
+</header>
+<section class="page-header">
+  <div class="container">
+    <a href="/cars" class="back-link">← 返回库存列表</a>
+    <h1>${escapeHtml(car.brand + ' ' + car.model)}</h1>
+    <p>${car.year}年 · ${fmtMileage(car.mileage)} km · ${escapeHtml(car.fuel_type||'')}</p>
+  </div>
+</section>
+<section class="container detail-layout">
+  <div class="detail-gallery">
+    ${galleryHTML}
+  </div>
+  <div class="detail-info">
+    <h2>${escapeHtml(car.brand)}</h2>
+    <h1>${escapeHtml(car.model)}</h1>
+    <div class="detail-price">¥${fmtPrice(car.price)}</div>
+    <div class="specs-grid">
+      <div class="spec-item"><div class="spec-label">年份</div><div class="spec-value">${car.year}</div></div>
+      <div class="spec-item"><div class="spec-label">里程</div><div class="spec-value">${fmtMileage(car.mileage)} km</div></div>
+      <div class="spec-item"><div class="spec-label">燃油类型</div><div class="spec-value">${escapeHtml(car.fuel_type||'-')}</div></div>
+      <div class="spec-item"><div class="spec-label">变速箱</div><div class="spec-value">${escapeHtml(car.transmission||'-')}</div></div>
+      <div class="spec-item"><div class="spec-label">颜色</div><div class="spec-value">${escapeHtml(car.color||'-')}</div></div>
+      <div class="spec-item"><div class="spec-label">排放标准</div><div class="spec-value">${escapeHtml(car.emission_standard||'-')}</div></div>
+    </div>
+    <div class="btn-group">
+      <a href="/contact" class="btn btn-gold"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg> 咨询此车</a>
+      <a href="https://wa.me/8618079089999?text=${encodeURIComponent('我对 ' + car.brand + ' ' + car.model + ' (' + car.year + ') 感兴趣，请报价')}" target="_blank" class="btn btn-outline">WhatsApp 询价</a>
+    </div>
+  </div>
+</section>
+<section class="detail-desc">
+  <div class="container">
+    <h3>车辆描述</h3>
+    <p>${escapeHtml(car.description || `${car.year}年${car.brand} ${car.model}，行驶${fmtMileage(car.mileage)}公里，${car.fuel_type||''}，${car.transmission||''}。车辆状况良好，欢迎看车试驾。金霸二手车专业出口全球50+国家，品质保障，值得信赖。`)}</p>
+  </div>
+</section>
+<footer class="site-footer">
+  <div class="container">
+    <p>&copy; ${year} Jinba Auto Export. All rights reserved. 金霸二手车</p>
+  </div>
+</footer>
+</body>
+</html>`;
+}
+
+// ========== CARS LISTING PAGE ==========
+function generateCarsPage(cars) {
+  const year = new Date().getFullYear();
+  const carCards = cars.map(car => {
+    const img = getCarImage(car);
+    return `<div class="car-card">
+      <a href="/cars/${car.id}" class="car-card-image-link">
+        ${img ? `<img src="${img}" alt="${escapeHtml(car.brand+' '+car.model)}" loading="lazy" width="400" height="300">`
+              : `<div class="car-card-placeholder"><svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>`}
+      </a>
+      <div class="car-card-body">
+        <a href="/cars/${car.id}" class="car-card-title">${escapeHtml(car.brand+' '+car.model)}</a>
+        <div class="car-card-meta">
+          <span>${car.year}年</span>
+          <span>${fmtMileage(car.mileage)} km</span>
+          <span>${escapeHtml(car.fuel_type||'')}</span>
+          <span>${escapeHtml(car.transmission||'')}</span>
+        </div>
+        <div class="car-card-price">¥${fmtPrice(car.price)}</div>
+      </div>
+    </div>`;
+  }).join('\n      ');
+
+  return `<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>库存车辆 - 中国二手车出口 | 金霸二手车 Jinba Auto Export</title>
+<meta name="description" content="浏览金霸二手车全部库存。比亚迪BYD、MG名爵、奇瑞Chery、理想Li Auto、问界AITO等热门品牌二手车及新能源车，可出口全球。">
+<link rel="canonical" href="https://jinbacars.com/cars">
+<style>
+:root{--navy:#1a1a2e;--gold:#b8860b;--gold-light:#d4a843;--gray:#555;--light-gray:#e8e8e8;--white:#fff;--bg:#f8f7f4;--text:#333;--red:#c0392b;--green:#27ae60;--font:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans SC',sans-serif}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font);color:var(--text);background:var(--white);font-size:16px;line-height:1.6}
+.container{max-width:1200px;margin:0 auto;padding:0 20px}
+a{text-decoration:none;color:inherit}
+img{max-width:100%;height:auto}
+.site-header{position:sticky;top:0;z-index:100;background:var(--white);border-bottom:1px solid var(--light-gray);height:70px}
+.header-inner{display:flex;align-items:center;justify-content:space-between;height:100%}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:1.125rem;color:var(--navy)}
+.main-nav{display:flex;gap:32px}
+.main-nav a{font-size:.9375rem;font-weight:500;color:var(--gray);transition:color .2s}
+.main-nav a:hover,.main-nav a.active{color:var(--navy)}
+.page-header{background:var(--navy);padding:50px 0;text-align:center;border-bottom:3px solid var(--gold)}
+.page-header h1{font-size:2rem;font-weight:700;color:var(--white);margin-bottom:8px}
+.page-header p{color:rgba(255,255,255,.7);font-size:1rem}
+.search-bar{max-width:500px;margin:24px auto 0}
+.search-bar input{width:100%;padding:12px 20px;border:2px solid rgba(255,255,255,.2);border-radius:8px;background:rgba(255,255,255,.1);color:var(--white);font-size:1rem;outline:none;transition:border-color .3s}
+.search-bar input::placeholder{color:rgba(255,255,255,.5)}
+.search-bar input:focus{border-color:var(--gold)}
+.car-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;padding:50px 0}
+.car-card{background:var(--white);border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.06);transition:all .3s;border:1px solid var(--light-gray)}
+.car-card:hover{transform:translateY(-6px);box-shadow:0 12px 30px rgba(0,0,0,.1);border-color:var(--gold)}
+.car-card-image-link{display:block;position:relative;width:100%;height:200px;overflow:hidden}
+.car-card-image{width:100%;height:100%;object-fit:cover;display:block;background:var(--bg)}
+.car-card-placeholder{width:100%;height:200px;display:flex;align-items:center;justify-content:center;background:var(--bg)}
+.car-card-body{padding:16px}
+.car-card-title{display:block;font-size:1.0625rem;font-weight:600;color:var(--navy);margin-bottom:10px;transition:color .2s}
+.car-card-title:hover{color:var(--gold)}
+.car-card-meta{display:flex;flex-wrap:wrap;gap:8px;font-size:.8125rem;color:var(--gray);margin-bottom:10px}
+.car-card-meta span{background:var(--bg);padding:2px 8px;border-radius:4px}
+.car-card-price{font-size:1.25rem;font-weight:700;color:var(--red)}
+.no-results{text-align:center;padding:80px 20px;color:var(--gray);font-size:1.125rem;grid-column:1/-1}
+.site-footer{background:var(--navy);color:rgba(255,255,255,.7);padding:40px 0 20px;border-top:3px solid var(--gold);text-align:center;font-size:.875rem}
+@media(max-width:1024px){.car-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:768px){.car-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="/" class="logo"><svg width="36" height="36" viewBox="0 0 36 36" fill="none"><rect width="36" height="36" rx="8" fill="#b8860b"/><text x="18" y="24" text-anchor="middle" fill="white" font-weight="bold" font-size="18">J</text></svg> 金霸二手车</a>
+    <nav class="main-nav">
+      <a href="/">首页</a>
+      <a href="/cars" class="active">库存车辆</a>
+      <a href="/about">关于我们</a>
+      <a href="/contact">联系我们</a>
+    </nav>
+  </div>
+</header>
+<section class="page-header">
+  <div class="container">
+    <h1>库存车辆</h1>
+    <p>浏览全部 ${cars.length} 台车辆</p>
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="搜索品牌、车型..." oninput="filterCars(this.value)">
+    </div>
+  </div>
+</section>
+<section class="container">
+  <div class="car-grid" id="carGrid">
+    ${carCards}
+  </div>
+</section>
+<footer class="site-footer">
+  <div class="container">
+    <p>&copy; ${year} Jinba Auto Export. All rights reserved. 金霸二手车</p>
+  </div>
+</footer>
+<script>
+// Load cars data for client-side filtering
+var allCars = ${JSON.stringify(cars.map(c => ({id:c.id,brand:c.brand,model:c.model,year:c.year,price:c.price,mileage:c.mileage,fuel_type:c.fuel_type,transmission:c.transmission,image:getCarImage(c)})))};
+function filterCars(keyword){
+  var grid = document.getElementById('carGrid');
+  if(!keyword.trim()){ grid.innerHTML = allCars.map(carCardHTML).join(''); return; }
+  var kw = keyword.toLowerCase();
+  var filtered = allCars.filter(function(c){ return c.brand.toLowerCase().includes(kw) || c.model.toLowerCase().includes(kw) || c.year.toString().includes(kw); });
+  grid.innerHTML = filtered.length ? filtered.map(carCardHTML).join('') : '<div class="no-results">未找到匹配车辆</div>';
+}
+function carCardHTML(car){
+  var img = car.image || '';
+  return '<div class="car-card">' +
+    '<a href="/cars/' + car.id + '" class="car-card-image-link">' +
+    (img ? '<img src="' + img + '" alt="' + car.brand + ' ' + car.model + '" loading="lazy" width="400" height="300">'
+         : '<div class="car-card-placeholder"><svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>') +
+    '</a><div class="car-card-body">' +
+    '<a href="/cars/' + car.id + '" class="car-card-title">' + car.brand + ' ' + car.model + '</a>' +
+    '<div class="car-card-meta">' +
+    '<span>' + car.year + '年</span>' +
+    '<span>' + car.mileage.toLocaleString() + ' km</span>' +
+    '<span>' + (car.fuel_type||'') + '</span>' +
+    '<span>' + (car.transmission||'') + '</span>' +
+    '</div>' +
+    '<div class="car-card-price">¥' + car.price.toLocaleString() + '</div>' +
+    '</div></div>';
+}
+</script>
+</body>
+</html>`;
+}
+
 // ========== SITEMAP.XML ==========
-function generateSitemap() {
+function generateSitemap(cars) {
   const today = new Date().toISOString().split('T')[0];
+  const carUrls = Array.isArray(cars) ? cars.map(car => `
+  <url>
+    <loc>https://jinbacars.com/cars/${car.id}</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>`).join('') : '';
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
@@ -581,6 +848,12 @@ function generateSitemap() {
     <xhtml:link rel="alternate" hreflang="ar" href="https://jinbacars.com/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://jinbacars.com/"/>
   </url>
+  <url>
+    <loc>https://jinbacars.com/cars</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>${carUrls}
 </urlset>`;
 }
 
@@ -618,25 +891,48 @@ const path = require('path');
 const distDir = path.join(__dirname, '..', 'dist');
 if (!fs.existsSync(distDir)) fs.mkdirSync(distDir, { recursive: true });
 
+// 1. Generate index.html
 const indexHTML = generateIndexHTML();
 fs.writeFileSync(path.join(distDir, 'index.html'), indexHTML);
 console.log('✓ index.html (' + (indexHTML.length / 1024).toFixed(0) + ' KB)');
 
-const sitemap = generateSitemap();
-fs.writeFileSync(path.join(distDir, 'sitemap.xml'), sitemap);
-console.log('✓ sitemap.xml');
-
+// 2. Generate cars-data.json
 const carsData = generateCarsData();
 fs.writeFileSync(path.join(distDir, 'cars-data.json'), carsData);
 console.log('✓ cars-data.json (' + (carsData.length / 1024).toFixed(0) + ' KB)');
 
+// 3. Generate robots.txt
 fs.writeFileSync(path.join(distDir, 'robots.txt'), generateRobotsTxt());
 console.log('✓ robots.txt');
 
+// 4. Generate CNAME
 fs.writeFileSync(path.join(distDir, 'CNAME'), 'jinbacars.com');
 console.log('✓ CNAME');
 
-// Copy local image assets
+// 5. Generate car detail pages
+const allCars = carModel.findAll({ limit: 200, page: 1 });
+const carsDir = path.join(distDir, 'cars');
+if (!fs.existsSync(carsDir)) fs.mkdirSync(carsDir, { recursive: true });
+
+let carCount = 0;
+for (const car of allCars.data) {
+  const detailHTML = generateCarDetailPage(car);
+  fs.writeFileSync(path.join(carsDir, `${car.id}.html`), detailHTML);
+  carCount++;
+}
+console.log(`✓ cars/*.html (${carCount} detail pages)`);
+
+// 6. Generate cars listing page
+const carsListing = generateCarsPage(allCars.data);
+fs.writeFileSync(path.join(carsDir, 'index.html'), carsListing);
+console.log('✓ cars/index.html (listing page)');
+
+// 7. Generate sitemap.xml (with all car URLs)
+const sitemap = generateSitemap(allCars.data);
+fs.writeFileSync(path.join(distDir, 'sitemap.xml'), sitemap);
+console.log('✓ sitemap.xml (' + allCars.data.length + ' car URLs)');
+
+// 8. Copy local image assets
 const imageDirs = [
   { src: '../public/uploads/carousel', dst: 'uploads/carousel', ext: '.jpg' },
   { src: '../public/uploads/testimonials', dst: 'uploads/testimonials', ext: '.jpg' },
@@ -655,3 +951,4 @@ for (const dir of imageDirs) {
 }
 
 console.log('\nDone! All files generated in dist/');
+console.log('Run "npm run deploy" to push to GitHub Pages.');
