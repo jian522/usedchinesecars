@@ -33,15 +33,49 @@ const stats = { cars: carModel.getStats().total, countries: 59 };
 
 // ========== INDEX.HTML ==========
 function generateIndexHTML() {
-  const carouselSlides = carousel.map((slide, i) => `
+  // Carousel with fallback (seed.js URLs)
+const carouselSlides = (carousel.length > 0
+  ? carousel.map((slide, i) => `
     <div class="carousel-slide${i === 0 ? ' active' : ''}" style="background-image: url('${slide.image_url}')">
       <div class="slide-overlay"></div>
       <div class="slide-content container">
         <h1><span data-lang="zh">${escapeHtml(slide.title_zh || slide.title_en)}</span><span data-lang="en" style="display:none">${escapeHtml(slide.title_en || slide.title_zh)}</span><span data-lang="ru" style="display:none">${escapeHtml(slide.title_en || slide.title_zh)}</span><span data-lang="ar" style="display:none">${escapeHtml(slide.title_en || slide.title_zh)}</span></h1>
-        <p><span data-lang="zh">${escapeHtml(slide.description_zh || slide.description_en || '')}</span><span data-lang="en" style="display:none">${escapeHtml(slide.description_en || slide.description_zh || '')}</span></p>
-        <a href="${slide.button_link || '/cars'}" class="btn btn-gold"><span data-lang="zh">${escapeHtml(slide.button_text_zh || slide.button_text_en || '立即选购')}</span><span data-lang="en" style="display:none">${escapeHtml(slide.button_text_en || slide.button_text_zh || 'Shop Now')}</span></a>
+        <p><span data-lang="zh">${escapeHtml(slide.description_zh || slide.description_en || '')}</span><span data-lang="en" style="display:none">${escapeHtml(slide.description_en || slide.description_zh || '')}</span><span data-lang="ru" style="display:none">${escapeHtml(slide.description_ru || slide.description_en || '')}</span><span data-lang="ar" style="display:none">${escapeHtml(slide.description_ar || slide.description_en || '')}</span></p>
+        <a href="${slide.button_link || '/cars'}" class="btn btn-gold"><span data-lang="zh">${escapeHtml(slide.button_text_zh || slide.button_text_en || '立即选购')}</span><span data-lang="en" style="display:none">${escapeHtml(slide.button_text_en || slide.button_text_zh || 'Shop Now')}</span><span data-lang="ru" style="display:none">${escapeHtml(slide.button_text_ru || slide.button_text_en || 'Смотреть')}</span><span data-lang="ar" style="display:none">${escapeHtml(slide.button_text_ar || slide.button_text_en || 'تصفح')}</span></a>
       </div>
-    </div>`).join('\n');
+    </div>`).join('\n')
+  : `<div class="carousel-slide active" style="background-image: url('https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=1600')">
+      <div class="slide-overlay"></div>
+      <div class="slide-content container">
+        <h1><span data-lang="zh">专业二手车出口服务</span><span data-lang="en" style="display:none">Professional Used Car Export</span><span data-lang="ru" style="display:none">Профессиональный экспорт авто</span><span data-lang="ar" style="display:none">تصدير سيارات محترف</span></h1>
+        <p><span data-lang="zh">覆盖全球50+国家和地区，一站式出口解决方案</span><span data-lang="en" style="display:none">Covering 50+ countries worldwide, one-stop export solutions</span><span data-lang="ru" style="display:none">Покрытие 50+ стран мира, комплексные решения</span><span data-lang="ar" style="display:none">تغطية أكثر من 50 دولة حول العالم</span></p>
+        <a href="cars" class="btn btn-gold"><span data-lang="zh">浏览车辆</span><span data-lang="en" style="display:none">Browse Cars</span><span data-lang="ru" style="display:none">Смотреть авто</span><span data-lang="ar" style="display:none">تصفح السيارات</span></a>
+      </div>
+    </div>
+    <div class="carousel-slide" style="background-image: url('https://images.unsplash.com/photo-1562141960-bfb0f57b?w=1600')">
+      <div class="slide-overlay"></div>
+      <div class="slide-content container">
+        <h1><span data-lang="zh">多品牌车型选择</span><span data-lang="en" style="display:none">Multi-Brand Selection</span><span data-lang="ru" style="display:none">Широкий выбор брендов</span><span data-lang="ar" style="display:none">تشكيلة متعددة</span></h1>
+        <p><span data-lang="zh">丰田、本田、宝马、奔驰等热门品牌应有尽有</span><span data-lang="en" style="display:none">Toyota, Honda, BMW, Mercedes and more popular brands</span><span data-lang="ru" style="display:none">Toyota, Honda, BMW, Mercedes и другие</span><span data-lang="ar" style="display:none">تويوتا، هوندا، بي إم دبليو، مرسيدس والمزيد</span></p>
+        <a href="cars" class="btn btn-gold"><span data-lang="zh">查看详情</span><span data-lang="en" style="display:none">View Details</span><span data-lang="ru" style="display:none">Подробнее</span><span data-lang="ar" style="display:none">عرض التفاصيل</span></a>
+      </div>
+    </div>
+    <div class="carousel-slide" style="background-image: url('https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1600')">
+      <div class="slide-overlay"></div>
+      <div class="slide-content container">
+        <h1><span data-lang="zh">一站式出口服务</span><span data-lang="en" style="display:none">One-Stop Export Service</span><span data-lang="ru" style="display:none">Полный комплекс услуг</span><span data-lang="ar" style="display:none">خدمة متكاملة</span></h1>
+        <p><span data-lang="zh">采购、检测、物流、报关全程服务，让您省心省力</span><span data-lang="en" style="display:none">Full service from procurement to customs clearance</span><span data-lang="ru" style="display:none">Полный цикл от закупки до таможни</span><span data-lang="ar" style="display:none">خدمة كاملة من الشراء إلى الجمارك</span></p>
+        <a href="contact" class="btn btn-gold"><span data-lang="zh">联系我们</span><span data-lang="en" style="display:none">Contact Us</span><span data-lang="ru" style="display:none">Связаться</span><span data-lang="ar" style="display:none">اتصل بنا</span></a>
+      </div>
+    </div>
+    <div class="carousel-slide" style="background-image: url('https://images.unsplash.com/photo-1549924231-f129b911e442?w=1600')">
+      <div class="slide-overlay"></div>
+      <div class="slide-content container">
+        <h1><span data-lang="zh">品质保障 值得信赖</span><span data-lang="en" style="display:none">Quality Assured</span><span data-lang="ru" style="display:none">Гарантия качества</span><span data-lang="ar" style="display:none">جودة مضمونة</span></h1>
+        <p><span data-lang="zh">严格车辆检测流程，确保每辆车达到出口标准</span><span data-lang="en" style="display:none">Rigorous inspection ensures every vehicle meets export standards</span><span data-lang="ru" style="display:none">Строгая проверка каждой машины</span><span data-lang="ar" style="display:none">فحص صارم لكل سيارة لتتوافق مع معايير التصدير</span></p>
+        <a href="about" class="btn btn-gold"><span data-lang="zh">了解更多</span><span data-lang="en" style="display:none">Learn More</span><span data-lang="ru" style="display:none">Узнать больше</span><span data-lang="ar" style="display:none">اعرف المزيد</span></a>
+      </div>
+    </div>`);
 
   function carCardHTML(car) {
     const img = getCarImage(car);
