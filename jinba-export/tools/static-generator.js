@@ -37,9 +37,9 @@ function generateIndexHTML() {
     <div class="carousel-slide${i === 0 ? ' active' : ''}" style="background-image: url('${slide.image_url}')">
       <div class="slide-overlay"></div>
       <div class="slide-content container">
-        <h1>${escapeHtml(slide.title_zh || slide.title_en)}</h1>
-        <p>${escapeHtml(slide.description_zh || slide.description_en || '')}</p>
-        <a href="${slide.button_link || '/cars'}" class="btn btn-gold">${escapeHtml(slide.button_text_zh || slide.button_text_en || '立即选购')}</a>
+        <h1><span data-lang="zh">${escapeHtml(slide.title_zh || slide.title_en)}</span><span data-lang="en" style="display:none">${escapeHtml(slide.title_en || slide.title_zh)}</span><span data-lang="ru" style="display:none">${escapeHtml(slide.title_en || slide.title_zh)}</span><span data-lang="ar" style="display:none">${escapeHtml(slide.title_en || slide.title_zh)}</span></h1>
+        <p><span data-lang="zh">${escapeHtml(slide.description_zh || slide.description_en || '')}</span><span data-lang="en" style="display:none">${escapeHtml(slide.description_en || slide.description_zh || '')}</span></p>
+        <a href="${slide.button_link || '/cars'}" class="btn btn-gold"><span data-lang="zh">${escapeHtml(slide.button_text_zh || slide.button_text_en || '立即选购')}</span><span data-lang="en" style="display:none">${escapeHtml(slide.button_text_en || slide.button_text_zh || 'Shop Now')}</span></a>
       </div>
     </div>`).join('\n');
 
@@ -51,7 +51,7 @@ function generateIndexHTML() {
     return `
       <div class="car-card">
         <a href="/cars/${car.id}" class="car-card-image-link">
-          ${img ? `<img class="car-card-image" src="${img}" alt="${escapeHtml(car.brand + ' ' + car.model)}" loading="lazy" width="400" height="300">`
+          ${img ? `<img class="car-card-image" src="${img}" alt="${escapeHtml(car.brand + ' ' + car.model)}" referrerpolicy="no-referrer" loading="lazy" width="400" height="300">`
                 : `<div class="car-card-placeholder"><svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>`}
           ${badges.join('')}
         </a>
@@ -96,7 +96,8 @@ function generateIndexHTML() {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#0d1117">
+<meta name="theme-color" content="#1a1a2e">
+<meta name="referrer" content="no-referrer">
 <title>中国二手车出口 | 中国新能源车出口 | BYD MG 比亚迪二手车 - 金霸二手车 Jinba Auto Export</title>
 <meta name="description" content="金霸二手车，江西新余专业中国二手车出口平台。出口比亚迪BYD、MG名爵、问界AITO、理想Li Auto、小鹏Xpeng、蔚来NIO、奇瑞Chery、欧萌达Omoda、Jaecoo、吉利Geely、哈弗Haval、领克Lynk &amp; Co、极氪Zeekr等热门品牌。新能源电动车出口俄罗斯、中亚、中东、非洲、东南亚50+国家。Chinese used car export, China NEV/EV export.">
 <meta name="keywords" content="中国二手车出口,中国新能源车出口,比亚迪出口,BYD export,BYD used cars,BYD Seal,BYD Atto 3,BYD Dolphin,BYD Song,BYD Han,MG出口,MG used cars,MG4 EV,MG ZS EV,名爵出口,问界,AITO,理想汽车,Li Auto,奇瑞出口,中国二手汽车出口,江西二手车,新余二手车,金霸二手车,China used cars,used car export China,Chinese EV export">
@@ -205,7 +206,7 @@ img { max-width: 100%; height: auto; }
 .hamburger span { display: block; width: 22px; height: 2px; background: var(--color-navy); transition: var(--transition-base); }
 
 /* Hero Carousel */
-.hero-carousel { position: relative; height: 600px; overflow: hidden; width: 100%; }
+.hero-carousel { position: relative; height: min(600px, 70vh); overflow: hidden; width: 100%; }
 .carousel-track { position: relative; height: 100%; width: 100%; }
 .carousel-slide { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: 0; transition: opacity 0.8s ease; width: 100%; background-color: #1a1a2e; }
 .carousel-slide.active { opacity: 1; z-index: 1; }
@@ -322,15 +323,34 @@ img { max-width: 100%; height: auto; }
   .trust-grid { grid-template-columns: repeat(2, 1fr); gap: var(--space-md); }
   .country-grid { grid-template-columns: repeat(3, 1fr); }
   .footer-grid { grid-template-columns: 1fr; gap: var(--space-lg); }
-  .section { padding: 50px 0; }
+  .section { padding: 40px 0; }
   .section-header { flex-direction: column; align-items: flex-start; gap: var(--space-sm); }
-  .hero-carousel { height: 400px; }
-  .slide-content h1 { font-size: 1.75rem; }
-  .slide-content p { font-size: 0.9375rem; }
-  .slide-content { padding-top: 60px; }
-  .carousel-arrow { width: 36px; height: 36px; }
-  .carousel-arrow.prev { left: 10px; }
-  .carousel-arrow.next { right: 10px; }
+  .hero-carousel { height: min(400px, 55vh); }
+  .slide-content h1 { font-size: 1.5rem; }
+  .slide-content p { font-size: 0.875rem; max-width: 100%; }
+  .slide-content { padding-top: 50px; padding-left: 16px; padding-right: 16px; }
+  .carousel-arrow { width: 32px; height: 32px; }
+  .carousel-arrow.prev { left: 6px; }
+  .carousel-arrow.next { right: 6px; }
+  .carousel-slide .btn { padding: 10px 22px; font-size: 0.8125rem; }
+  .container { padding: 0 12px; }
+  .section-header h2 { font-size: 1.5rem; }
+  .car-card-image-link { height: 180px; }
+  .site-header { height: 60px; }
+  .header-inner { padding: 0 12px; }
+  .logo { font-size: 1rem; }
+  .lang-current { font-size: 0.75rem; padding: 4px 8px; }
+}
+@media (max-width: 480px) {
+  .hero-carousel { height: min(320px, 50vh); }
+  .slide-content h1 { font-size: 1.25rem; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); gap: var(--space-sm); }
+  .stat-number { font-size: 1.5rem; }
+  .stat-label { font-size: 0.75rem; }
+  .trust-grid { grid-template-columns: 1fr; }
+  .country-grid { grid-template-columns: repeat(2, 1fr); }
+  .section { padding: 30px 0; }
+  .car-card-image-link { height: 160px; }
 }
 </style>
 </head>
@@ -357,12 +377,12 @@ img { max-width: 100%; height: auto; }
       <span></span><span></span><span></span>
     </button>
     <div class="lang-switcher">
-      <span class="lang-current">中文 ▾</span>
+      <span class="lang-current" onclick="toggleLang()">中文</span>
       <div class="lang-dropdown">
-        <a href="/?lang=zh">中文</a>
-        <a href="/?lang=en">English</a>
-        <a href="/?lang=ru">Русский</a>
-        <a href="/?lang=ar">العربية</a>
+        <a href="#" onclick="setLang('zh');return false">中文</a>
+        <a href="#" onclick="setLang('en');return false">English</a>
+        <a href="#" onclick="setLang('ru');return false">Русский</a>
+        <a href="#" onclick="setLang('ar');return false">العربية</a>
       </div>
     </div>
   </div>
@@ -554,6 +574,34 @@ ${testimonialCards}
   if (nextBtn) nextBtn.addEventListener('click', nextSlide);
   resetTimer();
 })();
+
+// Language switching
+var currentLang = (function(){
+  var h = window.location.hash;
+  if (h.indexOf('#en') === 0) return 'en';
+  if (h.indexOf('#ru') === 0) return 'ru';
+  if (h.indexOf('#ar') === 0) return 'ar';
+  return 'zh';
+})();
+function toggleLang() {
+  var dd = document.querySelector('.lang-dropdown');
+  if (dd) dd.style.display = dd.style.display === 'block' ? 'none' : 'block';
+}
+function setLang(lang) {
+  currentLang = lang;
+  document.documentElement.lang = lang === 'zh' ? 'zh-CN' : (lang === 'ar' ? 'ar' : 'en');
+  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+  var els = document.querySelectorAll('[data-lang]');
+  for (var i = 0; i < els.length; i++) {
+    els[i].style.display = els[i].getAttribute('data-lang') === lang ? '' : 'none';
+  }
+  var label = document.querySelector('.lang-current');
+  if (label) label.textContent = {zh:'中文',en:'English',ru:'Русский',ar:'العربية'}[lang] || '中文';
+  window.location.hash = lang;
+  var dd = document.querySelector('.lang-dropdown');
+  if (dd) dd.style.display = 'none';
+}
+if (currentLang !== 'zh') setLang(currentLang);
 </script>
 </body>
 </html>`;
@@ -575,15 +623,16 @@ function generateCarDetailPage(car) {
   const galleryHTML = allImages.length > 1
     ? allImages.map((im, i) =>
         `<div class="detail-gallery-item${i===0?' active':''}" data-index="${i}">
-          <img src="${im.url}" alt="${escapeHtml(car.brand+' '+car.model)} - 图片${i+1}" loading="${i===0?'eager':'lazy'}" width="800" height="600">
+          <img src="${im.url}" alt="${escapeHtml(car.brand+' '+car.model)} - 图片${i+1}" referrerpolicy="no-referrer" loading="${i===0?'eager':'lazy'}" width="800" height="600">
         </div>`).join('\n        ')
-    : `<div class="detail-gallery-item active"><img src="${img}" alt="${escapeHtml(car.brand+' '+car.model)}" loading="eager" width="800" height="600"></div>`;
+    : `<div class="detail-gallery-item active"><img src="${img}" alt="${escapeHtml(car.brand+' '+car.model)}" referrerpolicy="no-referrer" loading="eager" width="800" height="600"></div>`;
 
   return `<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer">
 <title>${escapeHtml(title)}</title>
 <meta name="description" content="${escapeHtml(desc)}">
 <meta name="robots" content="index, follow">
@@ -699,7 +748,7 @@ function generateCarsPage(cars) {
     const img = getCarImage(car);
     return `<div class="car-card">
       <a href="/cars/${car.id}" class="car-card-image-link">
-        ${img ? `<img src="${img}" alt="${escapeHtml(car.brand+' '+car.model)}" loading="lazy" width="400" height="300">`
+        ${img ? `<img src="${img}" alt="${escapeHtml(car.brand+' '+car.model)}" referrerpolicy="no-referrer" loading="lazy" width="400" height="300">`
               : `<div class="car-card-placeholder"><svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>`}
       </a>
       <div class="car-card-body">
@@ -720,6 +769,7 @@ function generateCarsPage(cars) {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer">
 <title>库存车辆 - 中国二手车出口 | 金霸二手车 Jinba Auto Export</title>
 <meta name="description" content="浏览金霸二手车全部库存。比亚迪BYD、MG名爵、奇瑞Chery、理想Li Auto、问界AITO等热门品牌二手车及新能源车，可出口全球。">
 <link rel="canonical" href="https://jinbacars.com/cars">
@@ -806,7 +856,7 @@ function carCardHTML(car){
   var img = car.image || '';
   return '<div class="car-card">' +
     '<a href="/cars/' + car.id + '" class="car-card-image-link">' +
-    (img ? '<img src="' + img + '" alt="' + car.brand + ' ' + car.model + '" loading="lazy" width="400" height="300">'
+    (img ? '<img src="' + img + '" alt="' + car.brand + ' ' + car.model + '" referrerpolicy="no-referrer" loading="lazy" width="400" height="300">'
          : '<div class="car-card-placeholder"><svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>') +
     '</a><div class="car-card-body">' +
     '<a href="/cars/' + car.id + '" class="car-card-title">' + car.brand + ' ' + car.model + '</a>' +
