@@ -373,6 +373,7 @@
 </footer>
 
 <script src="js/cars-data.js"></script>
+<script src="js/slug-map.js"></script>
 <script>
 (function(){
   // Hero carousel
@@ -418,11 +419,11 @@
     var badges = '';
     if (c.is_featured) badges += '<span class="badge badge-f">Featured</span>';
     if (c.is_new_arrival) badges += '<span class="badge badge-n">New</span>';
-        var slug = SLUG_MAP[c.id] || c.id;
-    card.innerHTML = '<a href="cars/' + slug + '.html" class="car-card-img-link">' +
-      '<div class="car-card-img-wrap"><img src="' + c.images[0] + '" alt="' + c.brand + ' ' + c.model + '" loading="lazy" style="width:100%;height:180px;object-fit:cover;border-radius:8px">' + badges + '</div></a>' +
+        'var slug = SLUG_MAP[c.id] || c.id;
+    card.innerHTML = '<a href="cars-detail.html?id=' + c.id + '" class="car-card-img-link">' +
+      '<div class="car-card-img-wrap"><img src="' + (c.images[0] || c.image) + '" alt="' + c.brand + ' ' + c.model + '" loading="lazy" style="width:100%;height:180px;object-fit:cover;border-radius:8px">' + badges + '</div></a>' +
       '<div class="car-card-body">' +
-      '<a href="cars/' + slug + '.html" class="car-card-title">' + c.brand + ' ' + c.model + '</a>' +
+      '<a href="cars-detail.html?id=' + c.id + '" class="car-card-title">' + c.brand + ' ' + c.model + '</a>' +
       '<div class="car-card-meta"><span>' + c.year + '</span><span>' + c.mileage + '</span><span>' + c.fuel_type + '</span><span>' + c.transmission + '</span></div>' +
       '<div class="car-card-price">' + c.priceLabel + '</div>' +
       '</div>';
