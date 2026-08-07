@@ -1,4 +1,4 @@
-// ????? - Service Worker
+// Jinba Auto Export - Service Worker
 const CACHE_NAME = 'jinba-cache-v1';
 const urlsToCache = [
   '/',
